@@ -1,0 +1,91 @@
+﻿@using Licence.Holder.Application.Models.Team;
+@model AddUserCheckDetails
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team members - Invite team member - confirm details";
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamAdd" asp-action="InviteUser">Invite team member</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">
+                Confirm details and invite new team member
+            </h1>
+
+            <dl class="nhsuk-summary-list">
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Name
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.FirstName @Model.LastName
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="AddUserName">
+                            Change <span class="nhsuk-u-visually-hidden"> user name</span>
+                        </a>
+                    </dd>
+                </div>
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Email address
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.Email
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="AddUserEmail">
+                            Change<span class="nhsuk-u-visually-hidden"> user email address</span>
+                        </a>
+                    </dd>
+                </div>
+
+                @if (Model.ShowAccessLevel)
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Requires access to financial monitoring information
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            @Model.AccessLevel
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="AddUserAccessLevel">
+                                Change<span class="nhsuk-u-visually-hidden"> user access level</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+
+            <p>
+                When you send this invitation, the user will receive an email from the NHS England Independent Providers team prompting them to finish setting up their account.
+            </p>
+
+
+            @using (Html.BeginForm())
+            {
+                <div class="nhsuk-grid-row">
+                    <div class="nhsuk-grid-column-one-quarter">
+                        <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="AddUserCheckDetails">
+                            Send invitation
+                        </button>
+                    </div>
+                    <div class="nhsuk-grid-column-one-quarter">
+                        <a asp-controller="TeamAdd" asp-action="AddUserCancel">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+</div>

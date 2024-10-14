@@ -1,0 +1,128 @@
+﻿@using Domain.Objects.ViewModels.Team
+@using Licence.Holder.Application.Models.Team;
+@model AddUserNameViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team members - Invite team member - user name";
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamAdd" asp-action="InviteUser">Invite team member</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            @using (Html.BeginForm())
+            {
+                var classAttribute_firstname = "";
+                var classAttribute_lastname = "";
+
+                @if (Model.ValidationFailure)
+                {
+                    <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                        <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                            There is a problem
+                        </h2>
+
+                        @if (string.IsNullOrWhiteSpace(Model.FirstName))
+                        {
+                            classAttribute_firstname = "nhsuk-form-group--error";
+                            <div class="nhsuk-error-summary__body">
+                                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                    <li>
+                                        <a href="#firstname">Please provide a first name</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+
+                        @if (string.IsNullOrWhiteSpace(Model.LastName))
+                        {
+                            classAttribute_lastname = "nhsuk-form-group--error";
+                            <div class="nhsuk-error-summary__body">
+                                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                    <li>
+                                        <a href="#lastname">Please provide a last name</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+
+                    </div>
+                }
+
+                <div class="nhsuk-form-group">
+
+                    <fieldset class="nhsuk-fieldset">
+                        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                            <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                                Please provide the name of the individual you wish to invite
+                            </h1>
+                        </legend>
+
+                        @if (Model.ValidationFailure)
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.FirstName))
+                            {
+                                <span class="nhsuk-error-message" id="form-error-forname">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> Provide a first name
+                                </span>
+                            }
+                        }
+
+                        <div class="@classAttribute_firstname nhsuk-u-padding-bottom-4" id="firstname">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label" for="@nameof(Model.FirstName)">
+                                    First name
+                                </label>
+                                @Html.TextBoxFor(m => m.FirstName, new { @id = $"{nameof(Model.FirstName)}", @class = "nhsuk-input nhsuk-input nhsuk-u-width-one-third" })
+                            </div>
+                        </div>
+
+
+                        @if (Model.ValidationFailure)
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.LastName))
+                            {
+                                <span class="nhsuk-error-message" id="form-error-surname">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> Provide a last name
+                                </span>
+                            }
+                        }
+
+                        <div class="@classAttribute_lastname" id="lastname">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label" for="@nameof(Model.LastName)">
+                                    Last name
+                                </label>
+                                @Html.TextBoxFor(m => m.LastName, new { @id = $"{nameof(Model.LastName)}", @class = "nhsuk-input nhsuk-input nhsuk-u-width-one-third" })
+                            </div>
+                        </div>
+
+                        <div class="nhsuk-u-padding-bottom-4"></div>
+
+                    </fieldset>
+
+                    <div class="nhsuk-grid-row">
+                        <div class="nhsuk-grid-column-one-quarter">
+                            <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="AddUserName">
+                                Save and continue
+                            </button>
+                        </div>
+                        <div class="nhsuk-grid-column-one-quarter">
+                            <a asp-controller="TeamAdd" asp-action="AddUserCancel">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </main>
+</div>

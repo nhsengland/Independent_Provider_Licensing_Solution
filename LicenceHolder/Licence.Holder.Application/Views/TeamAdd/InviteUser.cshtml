@@ -1,0 +1,71 @@
+﻿@using Domain.Objects.ViewModels.Team
+@model InviteUserViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team members - Invite team member";
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamAdd" asp-action="InviteUser">Invite team member</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">
+                Invite a new team member
+            </h1>
+
+            <p>
+                To maintain an efficient and secure system, adding new users to our platform follows a straightforward process.
+            </p>
+
+            <h2>
+                What you’ll need
+            </h2>
+
+            <p>
+                You will be asked for the following details:
+            </p>
+
+            <ul>
+                <li>
+                    The first and last name of the person
+                </li>
+                <li>
+                    Their email address
+                </li>
+                @if (Model.IsCrsOrHardToReplaceOrganisation && Model.UserRole == Domain.Objects.Database.UserRole.Level2)
+                {
+                    <li>
+                        The requested access level
+                    </li>
+                }
+            </ul>
+
+            <p>
+                For any questions or assistance, please contact the <a asp-controller="Messages" asp-action="Send">NHS England Independent Providers team</a>.
+            </p>
+
+            <div class="nhsuk-grid-row">
+                <div class="nhsuk-grid-column-one-quarter">
+                    @using (Html.BeginForm())
+                    {
+                        <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="InviteUser">
+                            Continue
+                        </button>
+                    }
+                </div>
+                <div class="nhsuk-grid-column-one-quarter">
+                    <a asp-controller="TeamAdd" asp-action="AddUserCancel">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,68 @@
+﻿@using Licence.Holder.Application.Models.Licence;
+@model ChangeRegisteredAddressViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Licence - review change of registered address";
+}
+
+<div class="nhsuk-width-container app-width-container">
+
+    <partial name="_Nav_Licence_ManageCompany" />
+
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <h1 class="nhsuk-heading-l">
+            Review changes before submitting
+        </h1>
+
+        <dl class="nhsuk-summary-list">
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    New registered address
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    <div>@Model.Address_Line_1</div>
+                    @if (!string.IsNullOrEmpty(Model.Address_Line_2))
+                    {
+                        <div>@Model.Address_Line_2</div>
+                    }
+                    <div>@Model.Address_TownOrCity</div>
+                    @if (!string.IsNullOrEmpty(Model.Address_County))
+                    {
+                        <div>@Model.Address_County</div>
+                    }
+                    <div>@Model.Address_Postcode</div>
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ChangeRegisteredAddress">
+                        Change <span class="nhsuk-u-visually-hidden"> registered address</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+
+        <h2>
+            Submit changes for review
+        </h2>
+
+        <p>
+            Before submitting, please ensure that the updated address matches the one registered with Companies House. The NHS England Independent Providers team will review the changes to your registered address and inform you within 5 working days whether they have been approved.
+        </p>
+
+
+        @using (Html.BeginForm())
+        {
+            <div class="nhsuk-grid-row">
+                <div class="nhsuk-grid-column-one-quarter">
+                    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ReviewChangeOfRegisteredAddress">
+                        Submit for review
+                    </button>
+                </div>
+                <div class="nhsuk-grid-column-one-quarter">
+                    <a asp-action="CancelChangeOfRegisteredAddress">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        }
+    </main>
+</div>

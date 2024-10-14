@@ -1,0 +1,89 @@
+﻿@using Domain.Objects.ViewModels.Licence;
+@model LicenceDetailsViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Licence - Manage Licensee details";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    
+    <partial name="_Nav_Licence_ManageCompany" />
+    
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <h1 class="nhsuk-heading-l">
+            Manage Licensee details
+        </h1>
+
+        <div class="nhsuk-inset-text">
+            <span class="nhsuk-u-visually-hidden">Information: </span>
+            <p>
+                Please note that any changes made will not be reflected in the CQC database or on Companies House. To ensure your provider details are accurate and up to date, please visit the CQC website and Companies House directly.
+            </p>
+        </div>
+
+        <dl class="nhsuk-summary-list">
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    Licensee name
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @Model.CompanyName
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ChangeCompanyName">
+                        Change <span class="nhsuk-u-visually-hidden"> licensee name</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    Licence number
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @Model.LicenseNumber
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    CQC Provider ID
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @Model.CQCProviderID
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                </dd>
+            </div>
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    Registered address
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @Model.Address
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ChangeRegisteredAddress">
+                        Change <span class="nhsuk-u-visually-hidden"> registered address</span>
+                    </a>
+                </dd>
+            </div>
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    End of Financial Year
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    <time datetime="@Model.FinancialYearEnd.ToString("yyyy-MM-dd")">
+                        @Model.FinancialYearEnd.ToString("dd-MM-yyyy")
+                    </time>
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ChangeFinancialYearEnd">
+                        Change<span class="nhsuk-u-visually-hidden"> financial year end</span>
+                    </a>
+                </dd>
+            </div>
+        </dl>
+    </main>
+</div>
+

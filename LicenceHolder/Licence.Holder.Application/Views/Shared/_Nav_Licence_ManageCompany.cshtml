@@ -1,0 +1,18 @@
+﻿@using Domain.Logic.Integrations.Session
+@using Domain.Objects
+@inject ISessionOrchestration sessionOrchestration;
+@{
+    var licenceId = sessionOrchestration.Get<int>
+              (PageConstants.Session_License_Id);
+}
+<nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Licence" asp-action="Index" asp-route-id="@licenceId">Licence</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Licence" asp-action="ManageCompanyDetails">Manage licensee details</a></li>
+            </ol>
+        </div>
+    </nav>
+</nav>

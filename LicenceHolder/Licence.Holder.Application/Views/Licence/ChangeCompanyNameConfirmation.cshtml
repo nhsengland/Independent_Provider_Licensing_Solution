@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Licence - change licensee name confirmation";
+}
+
+<div class="nhsuk-width-container app-width-container">
+
+    <partial name="_Nav_Licence_ManageCompany" />
+
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-inset-text">
+            <span class="nhsuk-u-visually-hidden">Important: </span>
+            <h2>
+                Your request to change the licensee name has been submitted.
+            </h2>
+            <p>
+                The NHS England Independent Providers team has been notified of this change request.
+            </p>
+        </div>
+
+        <h3>
+            What happens next?
+        </h3>
+
+        <p>
+            The NHS England Independent Providers team will review and authorise your request. You will receive a confirmation message once it’s processed.
+
+        </p>
+
+        <p>
+            <a asp-action="Feedback" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+        </p>
+        <p>
+            This process can take up to 5 days. You will receive a reissued licence document after approval.
+        </p>
+    </main>
+</div>
+

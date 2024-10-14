@@ -1,0 +1,155 @@
+﻿@using Licence.Holder.Application.Models.Team;
+@model DeleteUserCheckViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    var title = Model.IsVerified ? "Remove team member" : "Remove pending invitation";
+    var pageTitle = $"NHS - Provider Licensing portal: Team members - {title}";
+    ViewBag.Title = pageTitle;
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamDelete" asp-action="DeleteUserCheck">@title</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">@title</h1>
+
+            @using (Html.BeginForm())
+            {
+                var classAttribute = "";
+
+                @Html.HiddenFor(model => model.FirstName)
+                @Html.HiddenFor(model => model.LastName)
+                @Html.HiddenFor(model => model.Email)
+                @Html.HiddenFor(model => model.IsVerified)
+
+                <dl class="nhsuk-summary-list">
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Name
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            @Model.FirstName @Model.LastName
+                        </dd>
+                    </div>
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Email
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            @Model.Email
+                        </dd>
+                    </div>
+                    @if (!Model.IsVerified && Model.DateLastEmailNotificationWasCreated != null)
+                    {
+                        <div class="nhsuk-summary-list__row">
+                            <dt class="nhsuk-summary-list__key">
+                                Date invite sent
+                            </dt>
+                            <dd class="nhsuk-summary-list__value">
+                                <time datetime="@Model.DateLastEmailNotificationWasCreated?.ToString("yyyy-MM-dd")">
+                                @Model.DateLastEmailNotificationWasCreated?.ToString("dd-MM-yyyy")</time>
+                            </dd>
+                            <dd class="nhsuk-summary-list__actions">
+
+                            </dd>
+                        </div>
+                    }
+                </dl>
+
+                <div class="nhsuk-inset-text">
+                    <span class="nhsuk-u-visually-hidden">Information: </span>
+
+                    <p>
+                        You're about to remove the invitee from the NHS Licensing Portal, which will revoke their access.
+                    </p>
+                    <p>
+                        Please verify the user's identity and confirm that this deletion is necessary.
+                    </p>
+                    <p>
+                        Are you sure you want to proceed with removing this user?
+                    </p>
+                </div>
+
+                @if (Model.ValidationFailure)
+                {
+                    classAttribute = "nhsuk-form-group--error";
+
+                    <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                        <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                            There is a problem
+                        </h2>
+
+                        <div class="nhsuk-error-summary__body">
+                            <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                <li>
+                                    <a href="#form-error">Please indicate if you would like to delete this user from the portal</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                <div class="nhsuk-form-group">
+
+                    <fieldset class="nhsuk-fieldset">
+                        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                            <h2 class="nhsuk-fieldset__heading-s">
+                                @if (Model.IsVerified)
+                                {
+                                    <text>Are you sure you want to delete this user?</text>
+                                }
+                                else
+                                {
+                                    <text>Are you sure you want to proceed with removing this user?</text>
+                                }
+
+                            </h2>
+                        </legend>
+
+                        @if (Model.ValidationFailure)
+                        {
+                            <span class="nhsuk-error-message" id="form-error">
+                                <span class="nhsuk-u-visually-hidden">Error:</span> Indicate if you want to delete this user
+                            </span>
+                        }
+
+                        <div class="nhsuk-radios @classAttribute">
+
+                            @for (var i = 0; i < Model.Values.Length; i++)
+                            {
+                                var value = Model.Values[i];
+                                var id = $"{nameof(Model.DeleteUser)}-{i}";
+                                <div class="nhsuk-radios__item">
+                                    @Html.RadioButtonFor(m => m.DeleteUser, value, new { id = id, @class = "nhsuk-radios__input" })
+                                    @Html.LabelFor(m => m.DeleteUser, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                                </div>
+                            }
+                        </div>
+                    </fieldset>
+
+                    <div class="nhsuk-grid-row nhsuk-u-padding-top-4">
+                        <div class="nhsuk-grid-column-one-quarter">
+                            <button class="nhsuk-button nhsuk-button-red" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="DeleteUserCheck">
+                                Continue
+                            </button>
+                        </div>
+                        <div class="nhsuk-grid-column-one-quarter">
+                            <div class="nhsuk-grid-column-one-quarter">
+                                <a asp-controller="Team" asp-action="Index">
+                                    Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+</div>

@@ -1,0 +1,142 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.nhse-messages-date-column {
+    width: 100px;
+}
+
+.nhse-button {
+    background-color: #005eb8;
+    border: none;
+    color: white;
+    padding: 3px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0px 2px;
+    cursor: pointer;
+    border-radius: 16px;
+}
+.nhse-button:hover {
+    color: white !important;
+}
+.nhse-button:visited {
+    color: white;
+}
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+.nhsuk-table__cell {
+    border-bottom: none !important;
+}
+.nhsuk-table__row:hover {
+    background-color: transparent !important;
+}
+.nhse-flex {
+    display: flex !important;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.notifications-unread {
+    color: #d5281b;
+}
+
+.notifications-list {
+    background-color: white;
+    padding: 15px;
+}
+
+.notifications--row {
+    cursor: pointer;
+}
+
+.notification-pagination {
+    background-color: white;
+}
+
+.nhse-button-active {
+    color: #005eb8;
+}
+
+.nhse-button-pending {
+    color: #fff9c4;
+}
+
+.nhsuk-button-not-button {
+    background: none;
+    border: none;
+    text-decoration: underline;
+    font-size: 1.1875rem;
+}
+
+.nhsuk-button-not-button:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.nhsuk-button-red {
+    background-color: #d5281b
+}
+.nhsuk-button-red:hover {
+    background-color: #B32115
+}
+
+.nhsuk-restricted {
+    background-color: #edeff2;
+    color: #4c6272;
+}
+
+    .nhsuk-restricted:hover {
+        cursor: default;
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #fff;
+        color: #4c6272 !important;
+    }
+
+.nhsuk-message {
+    white-space: pre-wrap;
+}
+
+.status-box-blue {
+    font-family: Frutiger W01, Arial, Sans-serif;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: inherit;
+    padding: 3px 5px 3px 5px;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 20px;
+    line-height: 1.45455;
+    font-weight: bold;
+    background-color: #005eb8;
+}
+
+.beta-banner {
+    font-family: Frutiger W01, Arial, Sans-serif;
+    color: #212b32;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    box-sizing: inherit;
+    padding: 16px 0;
+    background-color: #ffffff;
+}
+
+.nhse-organisation-card-separator {
+    border-top: 1px solid #d8dde0;
+    padding: 20px;
+}

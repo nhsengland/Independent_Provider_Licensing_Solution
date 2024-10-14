@@ -1,0 +1,163 @@
+﻿@using Domain.Objects.ViewModels.Team;
+@model ManageUsersViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Manage active Team members";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="ManageUsers">Manage active team members</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">Manage active team members</h1>
+
+            @if (Model.IsCrsOrHaredToReplaceOrganisation)
+            {
+                <ul>                    
+                    <li>It’s important to ensure that all provided information and assigned levels is accurate and up-to-date.</li>
+                    <li>To view and manage active profiles associated with your group in the table below.</li>
+                    <li>For any questions or assistance, please contact us by sending a <a asp-action="Send" , asp-controller="Messages">message.</a></li>
+                </ul>
+                <details class="nhsuk-details">
+                    <summary class="nhsuk-details__summary">
+                        <span class="nhsuk-details__summary-text">
+                            What are Access levels?
+                        </span>
+                    </summary>
+                    <div class="nhsuk-details__text">                       
+                        <p>Access levels determine the level of permissions and privileges granted to user within @Model.OrganisationName.</p>                                                    
+                    </div>
+                </details>
+
+                <table role="table" class="nhsuk-table-responsive nhsuk-u-padding-bottom-9">
+                    <caption class="nhsuk-table__caption"></caption>
+                    <thead role="rowgroup" class="nhsuk-table__head">
+                        <tr role="row">
+                            <th role="columnheader" class="" scope="col">
+                                Access levels
+                            </th>
+                            <th role="columnheader" class="" scope="col">
+                                Annual certifications <div class="nhsuk-body-s">Can view and contribute</div>
+                            </th>
+                            <th role="columnheader" class="" scope="col">
+                                Financial monitoring <div class="nhsuk-body-s">Can view and contribute</div>
+                            </th>
+                            <th role="columnheader" class="" scope="col">
+                                Can manage user profiles and permissions
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="nhsuk-table__body">
+                        <tr role="row" class="nhsuk-table__row">
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Access levels</span>
+                                <span>Level 1</span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Annual certifications <div class="nhsuk-body-s">Can view and contribute</div></span>
+                                <span>Yes - unrestricted </span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Financial monitoring <div class="nhsuk-body-s">Can view and contribute</div></span>
+                                <span>No - restricted</span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Can manage user profiles and permissions</span>
+                                <span>No - restricted</span>
+                            </td>
+                        </tr>
+                        <tr role="row" class="nhsuk-table__row">
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Access levels</span>
+                                <span>Level 2</span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Annual certifications <div class="nhsuk-body-s">Can view and contribute</div> </span>
+                                <span>Yes - unrestricted </span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Financial monitoring <div class="nhsuk-body-s">Can view and contribute</div></span>
+                                <span>Yes - unrestricted</span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Can manage user profiles and permissions</span>
+                                <span>Yes - unrestricted</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+
+            <table role="table" class="nhsuk-table-responsive">
+                <caption class="nhsuk-table__caption">Group: @Model.OrganisationName </caption>
+                <thead role="rowgroup" class="nhsuk-table__head">
+                    <tr role="row">
+                        <th role="columnheader" class="" scope="col">
+                            Name
+                        </th>
+                        <th role="columnheader" class="" scope="col">
+                            Email
+                        </th>
+                        @if (Model.IsCrsOrHaredToReplaceOrganisation)
+                        {
+                            <th role="columnheader" class="" scope="col">
+                                Access level
+                            </th>
+                        }
+                        <th role="columnheader" class="" scope="col">
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="nhsuk-table__body">
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr role="row" class="nhsuk-table__row">
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Name</span>
+                                <span><a asp-controller="Team" asp-action="ManageUser" asp-route-id=@user.Id>@user.Firstname @user.Lastname</a></span>
+                            </td>
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Email</span>
+                                <span>@user.Email</span>
+                            </td>
+                            @if (Model.IsCrsOrHaredToReplaceOrganisation)
+                            {
+                                <td role="cell" class="nhsuk-table__cell">
+                                    <span class="nhsuk-table-responsive__heading">Access level</span>
+                                    <span>@user.Level</span>
+                                </td>
+                            }
+                            <td role="cell" class="nhsuk-table__cell">
+                                <span class="nhsuk-table-responsive__heading">Status</span>
+                                @{
+                                    if (user.IsVerified)
+                                    {
+                                        <strong class="nhsuk-tag">
+                                            Active
+                                        </strong>
+                                    }
+                                    else
+                                    {
+                                        <strong class="nhsuk-tag nhsuk-tag--yellow">
+                                            Pending
+                                        </strong>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </main>
+</div>

@@ -1,0 +1,34 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_NoBackButton.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Financial monitoring templates - Update submission status confirmation";
+}
+
+<div class="nhsuk-inset-text">
+    <span class="nhsuk-u-visually-hidden">Information: </span>
+
+    <h1>
+        Confirmation
+    </h1>
+
+    <p>
+        You have successfully changed the submission status
+    </p>
+</div>
+
+<p>
+    The status of your submissions has been changed from 'Incomplete' to 'Complete'. NHS England Independent Providers team have been notified that the templates are ready for review.
+    
+</p>
+<p>
+    You will be notified by the NHS England Independent Providers team within the next 5 working days if further action is required.
+</p>
+
+<p>
+    <a asp-action="Feedback" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+</p>
+
+<p>
+    <a asp-controller="Home" asp-action="Index">
+        Return to Licence overview
+    </a>
+</p>

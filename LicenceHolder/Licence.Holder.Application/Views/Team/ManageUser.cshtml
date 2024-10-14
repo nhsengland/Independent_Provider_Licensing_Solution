@@ -1,0 +1,138 @@
+﻿@using Domain.Objects.ViewModels.Team
+@model ManageUserViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    var title = Model.IsVerified ? "Team member details" : "Pending team member";
+    var pageTitle = $"NHS - Provider Licensing portal: Team - {title}";
+    ViewBag.Title = pageTitle;
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="ManageUser">Manage active team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="ManageUser" asp-route-id="@Model.Id">@title</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">@title</h1>
+
+            <dl class="nhsuk-summary-list">
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Name
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.FirstName @Model.LastName
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+
+                    </dd>
+                </div>
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Email address
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.Email
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+
+                    </dd>
+                </div>
+                @if(Model.DateLastEmailNotificationWasCreated != null)
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Date invite sent
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            <time datetime="@Model.DateLastEmailNotificationWasCreated?.ToString("yyyy-MM-dd")">@Model.DateLastEmailNotificationWasCreated?.ToString("dd-MM-yyyy")</time>                            
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+
+                        </dd>
+                    </div>
+                }
+
+                @if (Model.ShowAccessLevel)
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Requires access to financial monitoring information
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            @Model.AccessLevel
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ManageUserChangeAccessLevel" asp-route-id="@Model.Id">
+                                Change <span class="nhsuk-u-visually-hidden"> user access level</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+        </div>
+
+        @if (Model.IsVerified)
+        {
+            <div class="nhsuk-inset-text">
+                <span class="nhsuk-u-visually-hidden">Information: </span>
+                <p>
+                    You cannot edit or manage another user's details. Any changes to their profile must be completed by the user.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="nhsuk-inset-text">
+                <span class="nhsuk-u-visually-hidden">Information: </span>
+                <p>
+                    This user has already been invited but has not activated their account.                    
+                </p>
+                <p>
+                    If you resend an invitation, they’ll receive an email from the NHS England Independent Providers team to prompting then to complete setting up their account.
+                </p>
+            </div>
+        }
+
+        <div class="nhsuk-grid-row">
+            @if (!Model.IsVerified)
+            {
+                <div class="nhsuk-grid-column-one-quarter">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.HiddenFor(model => model.Id)
+
+                        <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ManageUserResendInvitation">
+                            Resend Invitation
+                        </button>
+                    }
+                </div>
+            }
+            <div class="nhsuk-grid-column-one-quarter">
+                @using (Html.BeginForm())
+                {
+                    @Html.HiddenFor(model => model.Id)
+
+                    <a asp-controller="TeamDelete" asp-action="DeleteUser" asp-route-id="@Model.Id" class="nhsuk-error-message">
+                        @if(Model.IsVerified)
+                        {
+                            <text>Remove this user</text>
+                        }
+                        else
+                        {
+                            <text>Remove pending invitation</text>
+                        }
+                        
+                    </a>
+                }
+            </div>
+        </div>
+    </main>
+</div>

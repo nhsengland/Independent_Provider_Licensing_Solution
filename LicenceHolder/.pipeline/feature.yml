@@ -1,0 +1,12 @@
+trigger:
+  - feature/*
+  - features/*
+
+pool:
+  vmImage: 'windows-2022'
+
+stages:
+  - stage: build
+    displayName: build test package
+    jobs:
+      - template: build\build.test.pack.yml

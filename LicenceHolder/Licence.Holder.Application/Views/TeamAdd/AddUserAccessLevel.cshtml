@@ -1,0 +1,106 @@
+﻿@using Licence.Holder.Application.Models.Team;
+@model AddUserAccessLevelViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team members - Invite team member - access level";
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamAdd" asp-action="InviteUser">Invite team member</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            @using (Html.BeginForm())
+            {
+                var classAttribute = "";
+
+                @if (Model.ValidationFailure)
+                {
+                    classAttribute = "nhsuk-form-group--error";
+
+                    <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                        <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                            There is a problem
+                        </h2>
+
+                        <div class="nhsuk-error-summary__body">
+                            <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                <li>
+                                    <a href="#form-error">Please indicate if this person need access to financial monitoring information</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                <div class="nhsuk-form-group">
+
+                    <fieldset class="nhsuk-fieldset">
+                        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                            <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                                Does this person need access to financial monitoring information?
+                            </h1>
+                        </legend>
+
+                        <details class="nhsuk-details">
+                            <summary class="nhsuk-details__summary">
+                                <span class="nhsuk-details__summary-text">
+                                    What does this mean?
+                                </span>
+                            </summary>
+                            <div class="nhsuk-details__text">
+                                <p>
+                                    Financial monitoring information includes quarterly submissions required for maintaining the Provider licence which contain sensitive financial information about the group, including profits and financial forecasts.
+                                </p>
+
+                            </div>
+                        </details>
+
+                        @if (Model.ValidationFailure)
+                        {
+                            <span class="nhsuk-error-message" id="form-error-forname">
+                                <span class="nhsuk-u-visually-hidden">Error:</span> Indicate if this person need access to financial monitoring information
+                            </span>
+                        }
+
+
+                        <div class="@classAttribute">
+                            <div class="nhsuk-radios nhsuk-u-padding-bottom-4">
+                                @for (var i = 0; i < Model.Values.Length; i++)
+                                {
+                                    var value = Model.Values[i];
+                                    var id = $"{nameof(Model.AccessLevel)}-{i}";
+                                    <div class="nhsuk-radios__item">
+                                        @Html.RadioButtonFor(m => m.AccessLevel, value, new { id = id, @class = "nhsuk-radios__input" })
+                                        @Html.LabelFor(m => m.AccessLevel, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </fieldset>
+
+                    <div class="nhsuk-grid-row">
+                        <div class="nhsuk-grid-column-one-quarter">
+                            <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="AddUserAccessLevel">
+                                Save and continue
+                            </button>
+                        </div>
+                        <div class="nhsuk-grid-column-one-quarter">
+                            <a asp-controller="Team" asp-action="Index">
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </main>
+</div>

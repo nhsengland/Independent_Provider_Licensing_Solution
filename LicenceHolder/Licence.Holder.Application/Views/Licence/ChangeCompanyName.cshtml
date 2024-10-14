@@ -1,0 +1,86 @@
+﻿@using Domain.Logic.Features
+@using Licence.Holder.Application.Models.Licence;
+@model ChangeCompanyNameViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Licence - change company name";
+}
+
+<div class="nhsuk-width-container app-width-container">
+
+    <partial name="_Nav_Licence_ManageCompany" />
+
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+
+        @using (Html.BeginForm())
+        {
+            var classAttribute = "";
+
+            @if (Model.ValidationFailure)
+            {
+                classAttribute = "nhsuk-form-group--error";
+
+                <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                    <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                        There is a problem
+                    </h2>
+
+                    <div class="nhsuk-error-summary__body">
+                        <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                            <li>
+                                <a href="#form-error">Enter a licensee name</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            }
+
+            <div class="nhsuk-form-group">
+
+                <fieldset class="nhsuk-fieldset">
+                    <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                        <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                            Change licensee name
+                        </h1>
+                    </legend>
+
+                    <p>
+                        Enter new licensee name. Ensure it matches the information on file with Companies House and the CQC.
+                    </p>
+
+                    @if (Model.ValidationFailure)
+                    {
+                        <span class="nhsuk-error-message" id="form-error">
+                            <span class="nhsuk-u-visually-hidden">Error:</span> Enter a licensee name
+                        </span>
+                    }
+
+                    <div class="@classAttribute">
+                        <label class="nhsuk-label" for="@nameof(Model.CompanyName)">
+                            Enter licensee name
+                        </label>
+
+                        @Html.TextBoxFor(m => m.CompanyName, new { @id = $"{nameof(Model.CompanyName)}", @class = "nhsuk-input nhsuk-u-width-one-third" })
+                    </div>
+                    <div class="nhsuk-u-padding-bottom-4"></div>
+
+                </fieldset>
+
+            </div>
+
+            <div class="nhsuk-grid-row">
+                <div class="nhsuk-grid-column-one-quarter">
+                    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ChangeCompanyName">
+                        Continue
+                    </button>
+                </div>
+                <div class="nhsuk-grid-column-one-quarter">
+                    <a asp-action="CancelChangeOfCompanyName">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        }
+    </main>
+</div>

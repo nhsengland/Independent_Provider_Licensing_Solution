@@ -1,0 +1,57 @@
+﻿@using Domain.Objects
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Messages";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/">Licences</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/index">Messages</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">Messages</h1>
+            <ul class="nhsuk-grid-row nhsuk-card-group">
+                <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                    <div class="nhsuk-card nhsuk-card--clickable">
+                        <div class="nhsuk-card__content nhsuk-card__content--primary">
+                            <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                                <a class="nhsuk-card__link" asp-controller="messages" asp-action="inbox">Inbox</a>
+                            </h2>
+                            <p class="nhsuk-card__description">
+                                All incoming messages from the NHS England Independent Providers team are received and stored here.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                    <div class="nhsuk-card nhsuk-card--clickable">
+                        <div class="nhsuk-card__content nhsuk-card__content--primary">
+                            <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                                <a class="nhsuk-card__link" asp-controller="messages" asp-action="sent">Sent</a>
+                            </h2>
+                            <p class="nhsuk-card__description">
+                                Review all messages that have been sent by you and your team.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                    <div class="nhsuk-card nhsuk-card--clickable">
+                        <div class="nhsuk-card__content nhsuk-card__content--primary">
+                            <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                                <a class="nhsuk-card__link" asp-controller="messages" asp-action="send">New message</a>
+                            </h2>
+                            <p class="nhsuk-card__description">Create and send a new message to the NHS England Independent Providers team</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>

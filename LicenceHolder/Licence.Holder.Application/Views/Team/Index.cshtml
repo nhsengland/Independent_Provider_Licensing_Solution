@@ -1,0 +1,52 @@
+﻿@using Domain.Objects.ViewModels.Team;
+@model TeamManagementViewModel;
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/">Licences</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/team-management/index">Team members</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <h1 class="nhsuk-heading-l">Team members</h1>
+            <ul class="nhsuk-grid-row nhsuk-card-group">
+                <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                    <div class="nhsuk-card nhsuk-card--clickable">
+                        <div class="nhsuk-card__content nhsuk-card__content--primary">
+                            <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                                <a class="nhsuk-card__link" asp-controller="TeamAdd" asp-action="InviteUser">
+                                    Invite new team member
+                                </a>
+                            </h2>
+                            <p class="nhsuk-card__description">
+                                Select this option to add details and send an invite to a team member
+                            </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                    <div class="nhsuk-card nhsuk-card--clickable">
+                        <div class="nhsuk-card__content nhsuk-card__content--primary">
+                            <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                                <a class="nhsuk-card__link" asp-action="ManageUsers">
+                                    View and manage active team members
+                                </a>
+                            </h2>
+                            <p class="nhsuk-card__description">
+                                Manage team members, view who has access, and adjust their roles and permissions.
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>

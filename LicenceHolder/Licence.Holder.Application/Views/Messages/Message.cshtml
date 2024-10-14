@@ -1,0 +1,57 @@
+﻿@using Domain.Objects.ViewModels.Messages
+@model MessageDTO
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    var title = $"NHS - Provider Licensing portal: Message - {Model.Title}";
+    ViewBag.Title = title;
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/">Licences</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/index">Messages</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/message?id=@Model.Id">Message</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+
+            <partial name="_LeftSideNav_Messages" />
+
+            <li class="nhsuk-grid-column-three-quarters nhsuk-card-group__item nhsuk-u-padding-left-8">
+                <div class="nhsuk-grid-row">
+                    <table>
+                        <tr>
+                            <td>Sent</td>
+                            <td>@Model.DateSent</td>
+                        </tr>
+                        <tr>
+                            <td>Sent by</td>
+                            <td>@Model.From</td>
+                        </tr>
+                        <tr>
+                            <td>Subject</td>
+                            <td>@Model.Title</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <p class="nhsuk-card__description nhsuk-message">@Model.Body</p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <h3>
+                        You cannot reply to this message
+                    </h3>
+                    <p>
+                        To discuss this message further, <a asp-action="send">send a new message</a>
+                    </p>
+                </div>
+            </li>
+        </ul>
+
+    </main>
+</div>

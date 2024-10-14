@@ -1,0 +1,83 @@
+﻿@using Licence.Holder.Application.Models.AnnualCertificateTasks
+@model ACTUpdateSubmissionStatusViewModel
+@{
+    ViewBag.Title = "NHS - Provider Licensing portal: Update submission status";
+}
+<div class="nhsuk-grid-row">
+    <h1 class="nhsuk-heading-l">Update submission status</h1>
+
+    @using (Html.BeginForm())
+    {
+        var classAttribute = "";
+
+        @Html.HiddenFor(model => model.TaskId)
+        @Html.HiddenFor(model => model.LicenseId)
+        @Html.HiddenFor(model => model.LicenceName)
+        @Html.HiddenFor(model => model.ValidationFailure)
+
+        @if (Model.ValidationFailure)
+        {
+            classAttribute = "nhsuk-form-group--error";
+
+            <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                    There is a problem
+                </h2>
+
+                <div class="nhsuk-error-summary__body">
+                    <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                        <li>
+                            <a href="#form-error">Please indicate if you have completed the task</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        }
+
+        <div class="nhsuk-form-group">
+
+            <fieldset class="nhsuk-fieldset">
+                <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                    <h2 class="nhsuk-fieldset__heading-s">
+                        Have you completed and uploaded all annual compliance certifications for @Model.LicenceName?
+                    </h2>
+                </legend>
+
+                @if (Model.ValidationFailure)
+                {
+                    <span class="nhsuk-error-message" id="form-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Select an answer option
+                    </span>
+                }
+
+                <div class="nhsuk-radios @classAttribute">
+
+                    @for (var i = 0; i < Model.Values.Length; i++)
+                    {
+                        var value = Model.Values[i];
+                        var id = $"{nameof(Model.UpdateSubmissionStatus)}-{i}";
+                        <div class="nhsuk-radios__item">
+                            @Html.RadioButtonFor(m => m.UpdateSubmissionStatus, value, new { id = id, @class = "nhsuk-radios__input" })
+                            @Html.LabelFor(m => m.UpdateSubmissionStatus, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                        </div>
+                    }
+                </div>
+            </fieldset>
+
+            <div class="nhsuk-grid-row nhsuk-u-padding-top-4">
+                <div class="nhsuk-grid-column-one-quarter">
+                    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="UpdateSubmissionStatus">
+                        Continue
+                    </button>
+                </div>
+                <div class="nhsuk-grid-column-one-quarter">
+                    <div class="nhsuk-grid-column-one-quarter">
+                        <a asp-action="UpdateSubmissionStatusCancel">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

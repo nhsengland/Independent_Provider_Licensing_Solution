@@ -1,0 +1,109 @@
+﻿@using Licence.Holder.Application.Models.Team
+@model UserChangeAccessLevelViewModel
+@{
+    ViewBag.Title = "NHS - Provider Licensing portal: Team member - Change access level";
+}
+<h1 class="nhsuk-heading-l">Change access level</h1>
+
+<h2 class="nhsuk-heading-m">Does this person need access to financial monitoring information?</h2>
+
+<details class="nhsuk-details">
+    <summary class="nhsuk-details__summary">
+        <span class="nhsuk-details__summary-text">
+            What does this mean?
+        </span>
+    </summary>
+    <div class="nhsuk-details__text">
+        <p>Financial monitoring information includes quarterly submissions required for maintaining the Provider licence, containing sensitive financial information about the group, including profits and financial forecasts.</p>
+    </div>
+</details>
+
+
+<dl class="nhsuk-summary-list">
+    <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+            Name
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+            @Model.FirstName @Model.LastName
+        </dd>
+    </div>
+    <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+            Email address
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+            @Model.Email
+        </dd>
+    </div>
+</dl>
+
+@using (Html.BeginForm())
+{
+    var classAttribute = "";
+
+    @Html.HiddenFor(model => model.FirstName);
+    @Html.HiddenFor(model => model.LastName);
+    @Html.HiddenFor(model => model.Email);
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute = "nhsuk-form-group--error";
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            <div class="nhsuk-error-summary__body">
+                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                    <li>
+                        <a href="#form-error">Please indicate if this person need access to financial monitoring information</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+
+            @if (Model.ValidationFailure)
+            {
+                <span class="nhsuk-error-message" id="form-error-forname">
+                    <span class="nhsuk-u-visually-hidden">Error:</span> Indicate if this person need access to Financial Monitoring portal
+                </span>
+            }
+
+            <div class="@classAttribute">
+                <div class="nhsuk-radios nhsuk-u-padding-bottom-4">
+                    @for (var i = 0; i < Model.Values.Length; i++)
+                    {
+                        var value = Model.Values[i];
+                        var id = $"{nameof(Model.AccessLevel)}-{i}";
+                        <div class="nhsuk-radios__item">
+                            @Html.RadioButtonFor(m => m.AccessLevel, value, new { id = id, @class = "nhsuk-radios__input" })
+                            @Html.LabelFor(m => m.AccessLevel, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                        </div>
+                    }
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-one-quarter">
+                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ManageUserChangeAccessLevel">
+                    Save and continue
+                </button>
+            </div>
+            <div class="nhsuk-grid-column-one-quarter">
+                <a asp-action="ManageUserChangeAccessLevelCancel">
+                    Cancel
+                </a>
+            </div>
+        </div>
+
+    </div>
+}

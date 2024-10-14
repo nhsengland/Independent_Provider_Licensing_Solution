@@ -1,0 +1,171 @@
+﻿@using Domain.Logic.Features
+@using Licence.Holder.Application.Models.Team;
+@model AddUserEmailViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team members - Invite team member - user email";
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamAdd" asp-action="InviteUser">Invite team member</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+
+            @using (Html.BeginForm())
+            {
+                var classAttribute_email = "";
+                var classAttribute_Comparison_email = "";
+
+                @if (Model.ValidationFailure || Model.EmailDoesNotMatch)
+                {
+                    <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                        <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                            There is a problem
+                        </h2>
+
+                        <div class="nhsuk-error-summary__body">
+                            <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                @if (string.IsNullOrWhiteSpace(Model.Email) || !Model.Email.Contains('@'))
+                                {
+                                    classAttribute_email = "nhsuk-form-group--error";
+                                    <li>
+                                        <a href="#form-error">Please enter an email address in the correct format, like name@example.com</a>
+                                    </li>
+                                }
+
+                                @if (string.IsNullOrWhiteSpace(Model.ComparisonEmail) || !Model.ComparisonEmail.Contains('@'))
+                                {
+                                    classAttribute_Comparison_email = "nhsuk-form-group--error";
+                                    <li>
+                                        <a href="#form-error">Please enter an email address in the correct format, like name@example.com</a>
+                                    </li>
+                                }
+
+                                @if (Model.EmailDoesNotMatch)
+                                {
+                                    classAttribute_email = "nhsuk-form-group--error";
+                                    classAttribute_Comparison_email = "nhsuk-form-group--error";
+                                    <li>
+                                        <a href="#form-error-no-match">The email addresses you have supplied do not match</a>
+                                    </li>
+                                }
+
+                                @if (Model.EmailInUse)
+                                {
+                                    classAttribute_email = "nhsuk-form-group--error";
+                                    <li>
+                                        <a href="#form-error-email-in-use">The email address you have supplied is already in use</a>
+                                    </li>
+                                }
+
+                                @if (Model.EmailInBlackList)
+                                {
+                                    classAttribute_email = "nhsuk-form-group--error";
+                                    <li>
+                                        <a href="#form-error-email-in-use">The email address you have supplied is not acceptable</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                    </div>
+                }
+
+                <div class="nhsuk-form-group" id="form-error">
+
+                    <fieldset class="nhsuk-fieldset">
+                        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                            <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                                Add contact details
+                            </h1>
+                        </legend>
+
+                        @if (Model.ValidationFailure)
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.Email) || !Model.Email.Contains('@'))
+                            {
+                                <span class="nhsuk-error-message" id="form-error-email">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> Please enter an email address in the correct format, like name@example.com
+                                </span>
+                            }
+
+                            if (Model.EmailDoesNotMatch)
+                            {
+                                <span class="nhsuk-error-message" id="form-error-no-match">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> These email addresses do not match
+                                </span>
+                            }
+
+                            if (Model.EmailInUse)
+                            {
+                                <span class="nhsuk-error-message" id="form-error-email-in-use">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> The email address you have supplied is already in use
+                                </span>
+                            }
+
+                            if (Model.EmailInBlackList)
+                            {
+                                <span class="nhsuk-error-message" id="form-error-email-in-use">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> We will not accept an email from the domain you have supplied
+                                </span>
+                            }
+                        }
+
+                        <div class="@classAttribute_email nhsuk-u-padding-bottom-4">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label" for="@nameof(Model.Email)">
+                                    Email address
+                                </label>
+                                @Html.TextBoxFor(m => m.Email, HtmlHelperAttributeFactory.CreateForEmail(nameof(Model.ComparisonEmail)))
+                            </div>
+                        </div>
+
+
+                        @if (Model.ValidationFailure)
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.ComparisonEmail))
+                            {
+                                <span class="nhsuk-error-message" id="form-error-comparison">
+                                    <span class="nhsuk-u-visually-hidden">Error:</span> Please enter an email address in the correct format, like name@example.com
+                                </span>
+                            }
+                        }
+
+                        <div class="@classAttribute_Comparison_email">
+                            <div class="nhsuk-form-group">
+                                <label class="nhsuk-label" for="@nameof(Model.ComparisonEmail)">
+                                    Confirm email address
+                                </label>
+                                @Html.TextBoxFor(m => m.ComparisonEmail, HtmlHelperAttributeFactory.CreateForEmail(nameof(Model.ComparisonEmail)))
+                            </div>
+                        </div>
+
+                        <div class="nhsuk-u-padding-bottom-4"></div>
+
+                    </fieldset>
+                </div>
+
+                <div class="nhsuk-grid-row">
+                    <div class="nhsuk-grid-column-one-quarter">
+                        <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="AddUserEmail">
+                            Save and continue
+                        </button>
+                    </div>
+                    <div class="nhsuk-grid-column-one-quarter">
+                        <a asp-controller="TeamAdd" asp-action="AddUserCancel">
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </main>
+</div>
+

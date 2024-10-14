@@ -1,0 +1,143 @@
+﻿@using Domain.Objects.ViewModels.Messages
+@model SendMessageViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Send a Message";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/">Licences</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/index">Messages</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/new-message">New message</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            
+            <partial name="_LeftSideNav_Messages" />
+            
+            <li class="nhsuk-grid-column-three-quarters nhsuk-card-group__item nhsuk-u-padding-left-8">
+                <div class="nhsuk-grid-row">
+                    <h1 class="nhsuk-heading-l">New message</h1>
+                    
+                    <p>
+                        Send a message to the NHS England Independent Providers team.
+                    </p>
+
+                    @using (Html.BeginForm())
+                    {
+                        var classAttribute_Title = "";
+                        var classAttribute_Body = "";
+
+                        @if (Model.ValidationFailure)
+                        {
+                            <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                                <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                                    There is a problem
+                                </h2>
+
+                                @if (string.IsNullOrWhiteSpace(Model.Title))
+                                {
+                                    classAttribute_Title = "nhsuk-form-group nhsuk-form-group--error";
+
+                                    <div class="nhsuk-error-summary__body">
+                                        <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                            <li>
+                                                <a href="#form-error-title">Please provide a subject for the message</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+
+                                @if (string.IsNullOrWhiteSpace(Model.Body))
+                                {
+                                    classAttribute_Body = "nhsuk-form-group nhsuk-form-group--error";
+
+                                    <div class="nhsuk-error-summary__body">
+                                        <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                                            <li>
+                                                <a href="#form-error-body">Please provide a body for the message</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+
+                            </div>
+                        }
+
+                        <div class="nhsuk-form-group">
+
+                            <fieldset class="nhsuk-fieldset nhsuk-u-padding-top-0">
+                                <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                                    <h2 class="nhsuk-fieldset__heading">
+                                        @ViewData["Title"]
+                                    </h2>
+                                </legend>
+
+                                <div class="nhsuk-form-group @classAttribute_Title" id="form-error-title">
+
+                                    @if (Model.ValidationFailure)
+                                    {
+                                        if (string.IsNullOrWhiteSpace(Model.Title))
+                                        {
+                                            <span class="nhsuk-error-message">
+                                                <span class="nhsuk-u-visually-hidden">Error:</span> Provide a subject
+                                            </span>
+                                        }
+                                    }
+
+                                    <label class="nhsuk-label" for="@nameof(Model.Title)">
+                                        Subject
+                                    </label>
+                                    @Html.TextBoxFor(m => m.Title, new { @id = $"{nameof(Model.Title)}", @class = "nhsuk-input" })
+                                </div>
+
+                                <div class="nhsuk-form-group @classAttribute_Body" id="form-error-body">
+
+                                    @if (Model.ValidationFailure)
+                                    {
+                                        if (string.IsNullOrWhiteSpace(Model.Body))
+                                        {
+                                            <span class="nhsuk-error-message">
+                                                <span class="nhsuk-u-visually-hidden">Error:</span> Provide a body
+                                            </span>
+                                        }
+                                    }
+
+                                    <label class="nhsuk-label" for="@nameof(Model.Body)">
+                                        Body
+                                    </label>
+                                    <div class="nhsuk-hint" id="Body-hint">
+                                        The message will be a plain text notification, you cannot use any formatting.
+                                    </div>
+                                    @Html.TextAreaFor(m => m.Body, new { @id = $"{nameof(Model.Body)}", @class = "nhsuk-textarea", aria_describedby = "Body-hint", rows = 5 })
+                                </div>
+
+                                <div class="nhsuk-u-padding-bottom-2"></div>
+
+                            </fieldset>
+
+                        </div>
+
+                        <div class="nhsuk-grid-row">
+                            <div class="nhsuk-grid-column-one-quarter">
+                                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="Send">
+                                    Send
+                                </button>
+                            </div>
+                            <div class="nhsuk-grid-column-one-quarter">
+                                <a href="/messages/index">Cancel</a>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </li>
+        </ul>
+
+    </main>
+</div>

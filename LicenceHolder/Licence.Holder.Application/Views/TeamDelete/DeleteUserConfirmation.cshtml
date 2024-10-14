@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Team members - Delete user confirmation";
+}
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Team" asp-action="Index">Team members</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="TeamDelete" asp-action="DeleteUserConfirmation">Delete user confirmation</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <div class="nhsuk-grid-row">
+            <div class="nhsuk-inset-text">
+                <span class="nhsuk-u-visually-hidden">Information: </span>
+
+                <h1 class="nhsuk-heading-l">Confirmation</h1>
+                
+                <h2 class="nhsuk-heading-m">You have successfully removed this team member</h2>
+            </div>
+
+            <p>
+                This user has been deleted and can no longer access the NHS Independent Provider Licensing Portal. Their name has been removed from the ‘View and manage active team members”
+            </p>
+
+            <p>
+                The NHS England Independent Provider team have been notified of this change.
+            </p>
+            <p>
+                <a asp-action="Feedback" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+            </p>
+        </div>
+    </main>
+</div>

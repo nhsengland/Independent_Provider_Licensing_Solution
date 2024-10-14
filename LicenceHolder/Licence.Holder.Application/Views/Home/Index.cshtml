@@ -1,0 +1,210 @@
+﻿@using Domain.Objects.ViewModels.Dashboard
+@model DashboardViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_NoBackButton.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Licenses";
+}
+
+<h1 class="nhsuk-heading-l">Group: @Model.OrganisationName</h1>
+
+@if (Model.IsCrsOrHardToReplaceOrganisation && Model.FinancialMonitoringTasks != null)
+{
+    <div class="nhsuk-card ">
+        <div class="nhsuk-card__content nhsuk-u-padding-3">
+            <table role="table" class="nhsuk-table-responsive">
+                <caption class="nhsuk-table__caption">
+                    <div class="nhsuk-grid-row">
+                        <div class="nhsuk-grid-column-three-quarters">
+                            <p>
+                                @{
+                                    if (Model.UserRole == Domain.Objects.Database.UserRole.Level2 && Model.FinancialMonitoringTasks != null)
+                                    {
+                                        <a asp-controller="FinancialMonitoringTasks"
+                                            asp-action="Index"
+                                            asp-route-taskId="@Model.FinancialMonitoringTasks!.Id">
+                                            Access financial monitoring information
+                                        </a>
+                                    }
+                                    else
+                                    {
+
+                                        <text>Financial Monitoring Information</text>
+                                    }
+                                }
+                                
+                            </p>
+                        </div>
+                    </div>
+                </caption>
+                <thead role="rowgroup" class="nhsuk-table__head">
+                    <tr role="row">
+                        <th role="columnheader" class="" scope="col">
+                            Access level
+                        </th>
+                        <th role="columnheader" class="" scope="col">
+                            Submission due date
+                        </th>
+
+                        <th role="columnheader" class="" scope="col">
+                            @if (
+                                (Model.FinancialMonitoringTasks?.Status == Domain.Objects.Database.TaskStatus.InComplete)
+                           || (Model.FinancialMonitoringTasks?.Status == Domain.Objects.Database.TaskStatus.ThereIsAProblem) && Model.UserRole == Domain.Objects.Database.UserRole.Level2)
+                            {
+                                <a asp-controller="FinancialMonitoringTasks"
+                                   asp-action="UpdateSubmissionStatus"
+                                   asp-route-taskId="@Model.FinancialMonitoringTasks.Id"
+                                   asp-route-organisationId="@Model.FinancialMonitoringTasks.OrganisationId">Update submission status</a>
+                            }
+                            else
+                            {
+                                <text>Submission status</text>
+                            }
+                        </th>
+
+                        
+
+                        @if (Model.FinancialMonitoringTasks != null && Model.UserRole == Domain.Objects.Database.UserRole.Level1)
+                        {
+                            <th role="columnheader" class="" scope="col">
+                                Access restricted
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody class="nhsuk-table__body">
+                    @{
+                        if (Model.FinancialMonitoringTasks != null)
+                        {
+                            <tr role="row" class="nhsuk-table__row">
+                                <td role="cell" class="nhsuk-table__cell">
+                                    Level 2
+                                </td>
+                                <td role="cell" class="nhsuk-table__cell">
+                                    <time datetime="@Model.FinancialMonitoringTasks.DueDate.ToString("yyyy-MM-dd")">
+                                        @Model.FinancialMonitoringTasks.DueDate.ToString("dd-MM-yyyy")
+                                    </time>
+                                </td>
+                                    
+                                <td role="cell" class="nhsuk-table__cell">
+                                    <partial name="_TaskStatus" model=Model.FinancialMonitoringTasks />
+                                </td>
+
+                                @if (Model.UserRole == Domain.Objects.Database.UserRole.Level1)
+                                {
+                                    <td role="cell" class="nhsuk-table__cell">
+                                        <details class="nhsuk-details">
+                                            <summary class="nhsuk-details__summary">
+                                                <span class="nhsuk-details__summary-text">
+                                                    Why is this restricted?
+                                                </span>
+                                            </summary>
+                                            <div class="nhsuk-details__text">
+                                                <p>
+                                                    Financial monitoring templates contain sensitive financial information and are restricted to users with Level 2 status access only.
+                                                </p>
+                                            </div>
+                                        </details>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="nhse-organisation-card-separator"></div>
+}
+
+@foreach (var company in Model.Companies)
+{
+    <h2 class="nhsuk-heading-s">Active licence: @company.Name</h2>
+    <div class="nhsuk-grid-row nhse-flex">
+        <div class="nhsuk-grid-column-one-half">
+            <div class="nhsuk-card">
+                <div class="nhsuk-card__content nhsuk-u-padding-3">
+                    <p>
+                        <a href="~/licence/view-and-edit-licence-details/?id=@company.LicenceId">View or edit licence details</a>
+                    </p>
+                    <dl class="nhsuk-summary-list">
+                        <div class="nhsuk-summary-list__row">
+                            <dt class="nhsuk-summary-list__key">
+                                Licence number
+                            </dt>
+                            <dd class="nhsuk-summary-list__value">
+                                @company.LicenceNumber
+                            </dd>
+                        </div>
+                        <div class="nhsuk-summary-list__row">
+                            <dt class="nhsuk-summary-list__key">
+                                End of Financial Year
+                            </dt>
+                            <dd class="nhsuk-summary-list__value">
+                                <time datetime="@company.FinancialYearEnd.ToString("yyyy-MM-dd")">
+                                    @company.FinancialYearEnd.ToString("dd-MM-yyyy")
+                                </time>
+                            </dd>
+                        </div>
+                        <div class="nhsuk-summary-list__row">
+                            <dt class="nhsuk-summary-list__key">
+                                Registered address
+                            </dt>
+                            <dd class="nhsuk-summary-list__value">
+                                @company.Address
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="nhsuk-grid-column-one-half nhse-flex">
+            @if (company.AnnualCertificateTask != null)
+            {
+            <div class="nhsuk-card">
+                <div class="nhsuk-card__content nhsuk-u-padding-3">
+                    <p>
+
+                        <a asp-controller="AnnualCertificateTasks"
+                            asp-action="Index"
+                            asp-route-taskId="@company.AnnualCertificateTask.Id"
+                            asp-route-licenseId="@company.LicenceId">Access annual certification templates</a>            
+                    </p>
+                    <dl class="nhsuk-summary-list">
+                        <div class="nhsuk-summary-list__row">
+                            <dt class="nhsuk-summary-list__key">
+                                Submission due date
+                            </dt>
+                            <dd class="nhsuk-summary-list__value">
+                                <time datetime="@company.AnnualCertificateTask.DueDate.ToString("yyyy-MM-dd")">
+                                        @company.AnnualCertificateTask.DueDate.ToString("dd-MM-yyyy")
+                                    </time>
+                            </dd>
+                        </div>
+                        <div class="nhsuk-summary-list__row">
+                            @if (company.AnnualCertificateTask.Status == Domain.Objects.Database.TaskStatus.InComplete || company.AnnualCertificateTask.Status == Domain.Objects.Database.TaskStatus.ThereIsAProblem)
+                            {
+                                <dd class="nhsuk-summary-list__value">
+                                    <a asp-controller="AnnualCertificateTasks"
+                                        asp-action="UpdateSubmissionStatus"
+                                        asp-route-taskId="@company.AnnualCertificateTask.Id"
+                                        asp-route-licenseId="@company.LicenceId">Update submission status</a>
+                                </dd>
+                            }
+                            else
+                            {
+                                <dt class="nhsuk-summary-list__key">
+                                    Submission status
+                                </dt>
+                            }
+                            <dd class="nhsuk-summary-list__value">
+                                <partial name="_TaskStatus" model=company.AnnualCertificateTask />
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+}

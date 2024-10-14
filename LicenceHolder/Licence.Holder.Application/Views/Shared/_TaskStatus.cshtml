@@ -1,0 +1,25 @@
+﻿@using Domain.Objects.ViewModels.Tasks
+@model TaskViewModel
+
+@{
+    switch (Model.Status)
+    {
+        case Domain.Objects.Database.TaskStatus.InComplete:
+            <strong class="nhsuk-tag nhsuk-tag--blue">
+                Incomplete
+            </strong>
+            break;
+        case Domain.Objects.Database.TaskStatus.Completed:
+            <strong class="nhsuk-tag nhsuk-tag--green">
+                Completed
+            </strong>
+            break;
+        case Domain.Objects.Database.TaskStatus.ThereIsAProblem:
+            <strong class="nhsuk-tag nhsuk-tag--red">
+                There is a problem
+            </strong>
+            break;
+        default:
+            break;
+    }
+}

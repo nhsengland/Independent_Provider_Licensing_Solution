@@ -1,0 +1,71 @@
+﻿@using Domain.Objects.ViewModels.Licence;
+@model LicenceDetailsViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    var title = $"NHS - Provider Licensing portal: Licence {Model.LicenseId}";
+    ViewBag.Title = title;
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+            <div class="nhsuk-width-container">
+                <ol class="nhsuk-breadcrumb__list">
+                    <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" asp-controller="Licence" asp-action="Index" asp-route-id="@Model.LicenseId">Licence</a></li>
+                </ol>
+            </div>
+        </nav>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <h1 class="nhsuk-heading-l">
+            View and edit Licence details
+        </h1>
+
+        <div class="nhsuk-inset-text">
+            <span class="nhsuk-u-visually-hidden">Important: </span>
+            <h2 class="nhsuk-heading-m">
+                Important: options below relate to @Model.CompanyName
+            </h2>
+            <p>
+                Licence number: @Model.LicenseNumber
+            </p>
+        </div>
+
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content nhsuk-card__content--primary">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                            @{
+                                if (!string.IsNullOrWhiteSpace(Model.PublishedLicenceUrl))
+                                {
+                                    <a class="nhsuk-card__link" href="@Model.PublishedLicenceUrl">View and download current licence</a>
+                                }
+                                else
+                                {
+                                    <text>When the licence is published, download licence here</text>
+                                }
+                            }
+
+                        </h2>
+                        <p class="nhsuk-card__description">
+                            Access the current licence, and download it.
+                        </p>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content nhsuk-card__content--primary">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-xs">
+                            <a class="nhsuk-card__link" href="~/licence/view-and-edit-licence-details/manage-company-details" title="Clik here to view and manage company details">View and manage licensee details</a>
+                        </h2>
+                        <p class="nhsuk-card__description">View and edit the registered name, address and change the financial year end for this licence.</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </main>
+</div>

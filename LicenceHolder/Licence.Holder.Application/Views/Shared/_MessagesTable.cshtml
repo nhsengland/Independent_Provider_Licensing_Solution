@@ -1,0 +1,97 @@
+﻿@using Domain.Objects.ViewModels.Messages
+@model MessagesTableViewModel
+@{
+
+    string notificationText = (Model.MessagesDashboardViewModel.NumberOfUnreadMessages > 9) ? "9+" : @Model.MessagesDashboardViewModel.NumberOfUnreadMessages.ToString();
+}
+
+<p class="notification-unread">Select the subject line to open and read the full message</p>
+
+<table role="table" class="nhsuk-table-responsive notifications-list">
+    <thead role="rowgroup" class="nhsuk-table__head">
+        <tr role="row">
+            @if (Model.ShowReadIcon)
+            {
+                <th role="columnheader" class="" scope="col">
+                    Read
+                </th>
+            }
+            <th role="columnheader" class="" scope="col">
+                Subject
+            </th>
+            <th role="columnheader" class="nhse-messages-date-column" scope="col">
+                Date/Time
+            </th>
+        </tr>
+    </thead>
+    <tbody class="nhsuk-table__body">
+        @foreach (var message in Model.MessagesDashboardViewModel.Messages)
+        {
+            <tr role="row" class="nhsuk-table__row">
+
+                @if (Model.ShowReadIcon)
+                {
+                    var messageStatus = (message.IsRead) ? "read" : "unread";
+                    <td class="nhsuk-table__cell">
+                        @messageStatus
+                    </td>
+                }
+
+                <td class="nhsuk-table__cell">
+                    <span class="nhsuk-table-responsive__heading" aria-hidden="true">Subject </span>
+                    <a asp-action="Message" asp-controller="Messages" asp-route-id="@message.Id">
+                        @message.Title
+                    </a>
+                </td>
+                <td class="nhsuk-table__cell">
+                    <span class="nhsuk-table-responsive__heading" aria-hidden="true">Date/Time </span>
+                    <time datetime="@message.ActualDateSent.ToString("yyyy-MM-dd")">@message.DateSent</time>
+                </td>
+            </tr>
+            <tr role="row">
+                <td colspan="3"></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.MessagesDashboardViewModel.TotalNumberOfPages > 1)
+{
+    <nav class="nhsuk-pagination nhsuk-u-margin-top-0" role="navigation" aria-label="Pagination">
+        <ul class="nhsuk-list nhsuk-pagination__list">
+
+            <li class="nhsuk-pagination-item--previous notification-pagination">
+                @if (Model.MessagesDashboardViewModel.CurrentPageNumber > 1)
+                {
+                    <a class="nhsuk-pagination__link nhsuk-pagination__link--prev" href="@Url.Action(Model.ActionName, "Messages", new { page = Model.MessagesDashboardViewModel.CurrentPageNumber - 1 })">
+                        <span class="nhsuk-pagination__title">Previous</span>
+                        <svg class="nhsuk-icon nhsuk-icon__arrow-left" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="34" height="34">
+                            <path d="M4.1 12.3l2.7 3c.2.2.5.2.7 0 .1-.1.1-.2.1-.3v-2h11c.6 0 1-.4 1-1s-.4-1-1-1h-11V9c0-.2-.1-.4-.3-.5h-.2c-.1 0-.3.1-.4.2l-2.7 3c0 .2 0 .4.1.6z"></path>
+                        </svg>
+                    </a>
+                }
+                else
+                {
+                    <span class="nhsuk-pagination__title">&nbsp;</span>
+                }
+            </li>
+
+            <li class="nhsuk-pagination-item--next notification-pagination">
+
+                @if (Model.MessagesDashboardViewModel.CurrentPageNumber < Model.MessagesDashboardViewModel.TotalNumberOfPages)
+                {
+                    <a class="nhsuk-pagination__link nhsuk-pagination__link--next" href="@Url.Action(Model.ActionName, "Messages", new { page = Model.MessagesDashboardViewModel.CurrentPageNumber + 1 })">
+                        <span class="nhsuk-pagination__title">Next</span>
+                        <svg class="nhsuk-icon nhsuk-icon__arrow-right" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="34" height="34">
+                            <path d="M19.6 11.66l-2.73-3A.51.51 0 0 0 16 9v2H5a1 1 0 0 0 0 2h11v2a.5.5 0 0 0 .32.46.39.39 0 0 0 .18 0 .52.52 0 0 0 .37-.16l2.73-3a.5.5 0 0 0 0-.64z"></path>
+                        </svg>
+                    </a>
+                }
+                else
+                {
+                    <span class="nhsuk-pagination__title">&nbsp;</span>
+                }
+            </li>
+        </ul>
+    </nav>
+}

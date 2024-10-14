@@ -1,0 +1,118 @@
+﻿@using Domain.Logic.Features
+@using Licence.Holder.Application.Models.Licence;
+@model ChangeFinancialYearEndViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Licence - change financial year end";
+}
+
+<div class="nhsuk-width-container app-width-container">
+
+    <partial name="_Nav_Licence_ManageCompany" />
+
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+
+        @using (Html.BeginForm())
+        {
+            var classAttribute = "";
+            var errorMessage = "Provide a valid date";
+
+            @if (Model.ValidationFailure)
+            {
+                classAttribute = "nhsuk-form-group--error";
+                <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+                    <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                        There is a problem with the date you have supplied
+                    </h2>
+
+                    <div class="nhsuk-error-summary__body">
+                        <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                            <li>
+                                <a href="#form-error-year">
+                                    @{
+                                        if (Model.IsDateInPast != null && Model.IsDateInPast == true)
+                                        {
+                                            errorMessage = "The date must be a date set in the future";
+                                            <text>Review the date you have supplied, it must be a date in the future</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Review the date you have supplied, it is not a valid date</text>
+                                        }
+                                    }
+                                    
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            }
+
+            <fieldset class="nhsuk-fieldset">
+                <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                    <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                        Change the financial year end for @Model.CompanyName
+                    </h1>
+                </legend>
+
+                <p>
+                    Please note that any changes made will not be reflected in the CQC database or on Companies House.
+                </p>
+
+                <div class="nhsuk-date-input @classAttribute">
+                    @if (Model.ValidationFailure)
+                    {
+                        <span class="nhsuk-error-message" id="form-error-day">
+                            <span class="nhsuk-u-visually-hidden">Error:</span> @errorMessage
+                        </span>
+                    }
+                    <div class="nhsuk-date-input__item">
+                        <div class="nhsuk-form-group">
+                            <label class="nhsuk-label nhsuk-date-input__label" for="@nameof(Model.Day)">
+                                Day
+                            </label>
+                            @Html.TextBoxFor(m => m.Day, HtmlHelperAttributeFactory.CreateForDate_DayOrMonth(nameof(Model.Day)))
+                        </div>
+                    </div>
+                    <div class="nhsuk-date-input__item">
+                        <div class="nhsuk-form-group">
+                            <label class="nhsuk-label nhsuk-date-input__label" for="@nameof(Model.Month)">
+                                Month
+                            </label>
+                            @Html.TextBoxFor(m => m.Month, HtmlHelperAttributeFactory.CreateForDate_DayOrMonth(nameof(Model.Month)))
+                        </div>
+                    </div>
+                    <div class="nhsuk-date-input__item">
+                        <div class="nhsuk-form-group">
+                            <label class="nhsuk-label nhsuk-date-input__label" for="@nameof(Model.Year)">
+                                Year
+                            </label>
+                            @Html.TextBoxFor(m => m.Year, HtmlHelperAttributeFactory.CreateForDate_Year(nameof(Model.Year)))
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nhsuk-hint" id="example-hint">
+                    Please enter in format DD MM YYYY
+                </div>
+
+                <div class="nhsuk-u-padding-bottom-4"></div>
+
+            </fieldset>
+
+            <div class="nhsuk-grid-row">
+                <div class="nhsuk-grid-column-one-quarter">
+                    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ChangeFinancialYearEnd">
+                        Continue
+                    </button>
+                </div>
+                <div class="nhsuk-grid-column-one-quarter">
+                    <a asp-action="CancelChangeOfFinancialYearEnd">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        }
+    </main>
+</div>

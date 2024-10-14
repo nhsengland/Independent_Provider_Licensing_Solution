@@ -1,0 +1,24 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "",
+    "SQL:DatabaseErrorNumbersForRetry": "-2,40197,40501,11001",
+    "SQL:MaxRetryCount": 5,
+    "SQL:MaxRetryDelayInSeconds": 5,
+    "QueueClientConfiguration:CreateOktaUserQueueName": "create-okta-user",
+    "QueueClientConfiguration:RemoveOktaUserFromGroupQueueName": "remove-okta-user-from-group",
+    "QueueClientConfiguration:StorageAccountName": "UseDevelopmentStorage=true",
+    "QueueClientConfiguration:AutomationStorageAccountName": "UseDevelopmentStorage=true",
+    "QueueClientConfiguration:AutomationRefreshSharepointPermissionQueueName": "logicapp-07",
+    "AutomationConfiguration:BaseUrl": "https://localhost:7210/",
+    "AutomationConfiguration:NewUserEmailTemplate": "e4824851-89cd-46c6-90c6-740cc57c017e",
+    "AutomationConfiguration:ExistingUserEmailTemplate": "c142e369-d807-458e-807b-3eb2ff628736",
+    "AutomationConfiguration:APIAudienceHeader": "api//managed-identity-of-target",
+    "FunctionConfiguration:LicenseHolderURL": "https://localhost:7150/"
+  },
+  "ConnectionStrings": {
+    "LicenseHolderGateway": "Server=(localdb)\\MSSQLLocalDB;Database=LicenseHolder;Trusted_Connection=True;TrustServerCertificate=True"
+  }
+}

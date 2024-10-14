@@ -1,0 +1,105 @@
+parameters:
+  buildConfiguration: 'Release'
+
+jobs:
+  - job:
+    displayName: Build Test & Pack
+    steps:
+      - task: UseDotNet@2
+        displayName: Use .NET 8.0.x
+        inputs:
+          packageType: 'sdk'
+          version: '8.0.x'
+
+      - task: NuGetAuthenticate@1
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet restore'
+        inputs:
+          command: restore
+          projects: '**/*.csproj'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet build'
+        inputs:
+          projects: 'NHSE.Licence.Holder.sln'
+          command: 'build'
+          arguments: '--configuration ${{ parameters.buildConfiguration }}'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet publish webapp'
+        inputs:
+          projects: 'Licence.Holder.Application/Licence.Holder.Application.csproj'
+          command: 'publish'
+          arguments: '--output publish_output_lhg --configuration ${{ parameters.buildConfiguration }} --framework net8.0 --runtime win-x64 --self-contained false'
+          zipAfterPublish: false
+          modifyOutputPath: false
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet test'
+        inputs:
+          command: test
+          projects: |
+            **/*Tests/*.csproj
+            !**/*Integration.Tests/Integration.Tests.csproj
+          arguments: '--configuration ${{ parameters.buildConfiguration }} --logger trx --collect "Code coverage"'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet publish function'
+        inputs:
+          projects: 'Functions/Functions.csproj'
+          command: 'publish'
+          arguments: '--output publish_output_functions --configuration ${{ parameters.buildConfiguration }} --framework net8.0 --runtime win-x64 --self-contained false'
+          zipAfterPublish: false
+          publishWebProjects: false
+
+      - task: PublishTestResults@2
+        inputs:
+          testRunner: VSTest
+          testResultsFiles: '**/*.trx'
+          searchFolder: $(Agent.TempDirectory)
+          
+      - task: PowerShell@2
+        displayName: 'Bicep linter'
+        inputs:
+          workingDirectory: $(System.DefaultWorkingDirectory)/.iac/
+          targetType: 'inline'
+          script: az bicep build -f main.bicep
+          
+      - task: DotNetCoreCLI@2
+        displayName: 'Install EF tool'
+        inputs:
+          command: 'custom'
+          custom: 'tool'
+          arguments: 'install --global dotnet-ef --version 8.*'
+
+      - task: PowerShell@2
+        displayName: 'dotnet ef migrations'
+        inputs:
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Licence.Holder.Application'
+          targetType: inline
+          script: |
+            dotnet ef migrations script --project Licence.Holder.Application.csproj --output .sql/migrations-script.sql --idempotent
+      
+      - task: ArchiveFiles@2
+        displayName: "Zip Webapp project"
+        inputs:
+          rootFolderOrFile: "publish_output_lhg"
+          includeRootFolder: false
+          archiveFile: "$(Build.ArtifactStagingDirectory)/NHSE.Licence.Holder.Application.zip"
+
+      - publish: $(Build.ArtifactStagingDirectory)/NHSE.Licence.Holder.Application.zip
+        artifact: NHSE.Licence.Holder.Application
+      
+      - task: ArchiveFiles@2
+        displayName: "Zip Function project"
+        inputs:
+          rootFolderOrFile: "publish_output_functions/Functions"
+          includeRootFolder: false
+          archiveFile: "$(Build.ArtifactStagingDirectory)/NHSE.Licence.Holder.Functions.zip"
+
+      - publish: $(Build.ArtifactStagingDirectory)/NHSE.Licence.Holder.Functions.zip
+        artifact: NHSE.Licence.Holder.Functions
+
+      - publish: $(System.DefaultWorkingDirectory)/Licence.Holder.Application/.sql/migrations-script.sql
+        artifact: NHSE.Licence.Holder.Database.Migration

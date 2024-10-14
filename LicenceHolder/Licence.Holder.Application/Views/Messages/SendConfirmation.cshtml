@@ -1,0 +1,36 @@
+﻿@using Domain.Objects.ViewModels.Messages
+@model SendMessageViewModel
+@{
+    Layout = "~/Views/Shared/_Layout_With_BreadCrumb.cshtml";
+    ViewBag.Title = "NHS - Provider Licensing portal: Message sent confirmation";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <nav class="nhsuk-breadcrumb app-breadcrumb" aria-label="Breadcrumb">
+        <div class="nhsuk-width-container">
+            <ol class="nhsuk-breadcrumb__list">
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/">Licences</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/index">Messages</a></li>
+                <li class="nhsuk-breadcrumb__item"><a class="nhsuk-breadcrumb__link" href="~/messages/new-message">New message</a></li>
+            </ol>
+        </div>
+    </nav>
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+
+            <partial name="_LeftSideNav_Messages" />
+
+            <li class="nhsuk-grid-column-three-quarters nhsuk-card-group__item nhsuk-u-padding-left-8">
+                <div class="nhsuk-grid-row">
+                    <h1 class="nhsuk-heading-l">Your notification has been sent</h1>
+                    <p>Your notification will be reviewed within 5 working days of submitting. If there are any further questions the team will get in touch.</p>
+
+                    <p>
+                        <a asp-action="Feedback" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+                    </p>
+                </div>
+            </li>
+        </ul>
+
+    </main>
+</div>
