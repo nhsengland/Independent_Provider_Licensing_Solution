@@ -1,0 +1,209 @@
+CREATE USER [auto-logicapp-nhse-ipls-prd-01]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-01];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-01];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-02]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-02];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-02];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-03]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-03];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-03];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-04]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-04];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-04];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-05]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-05];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-05];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-06]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-06];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-06];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-07]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-07];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-07];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-08]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-08];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-08];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-09]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-09];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-09];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-10]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-10];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-10];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-11]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-11];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-11];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-12]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-12];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-12];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-13]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-13];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-13];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-14]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-14];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-14];
+
+CREATE USER [auto-logicapp-nhse-ipls-prd-15]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-15];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [auto-logicapp-nhse-ipls-prd-15];
+
+CREATE USER [IPLSService@england.nhs.uk]
+FROM
+EXTERNAL
+PROVIDER;
+
+ALTER
+ROLE db_datareader
+ADD MEMBER [IPLSService@england.nhs.uk];
+
+ALTER
+ROLE db_datawriter
+ADD MEMBER [IPLSService@england.nhs.uk];
+
+SELECT DISTINCT [name] FROM sysusers WHERE issqlrole = 0 and name not in('dbo','guest','INFORMATION_SCHEMA','sys')

@@ -1,0 +1,53 @@
+parameters:
+  buildConfiguration: 'Release'
+
+jobs:
+  - job:
+    displayName: Build & Pack
+    steps:
+      - task: UseDotNet@2
+        displayName: Use .NET 8.0.x
+        inputs:
+          packageType: 'sdk'
+          version: '8.0.x'
+
+      - task: NuGetAuthenticate@1
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet restore'
+        inputs:
+          command: restore
+          projects: '**/*.csproj'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet build'
+        inputs:
+          projects: 'Licensing.Automation.Functions.sln'
+          command: 'build'
+          arguments: '--configuration ${{ parameters.buildConfiguration }}'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'dotnet publish function'
+        inputs:
+          projects: 'Licensing.Automation.Functions/Licensing.Automation.Functions.csproj'
+          command: 'publish'
+          arguments: '--output publish_output_automation --configuration ${{ parameters.buildConfiguration }} --framework net8.0 --runtime win-x64 --self-contained false'
+          zipAfterPublish: false
+          publishWebProjects: false
+          
+      - task: PowerShell@2
+        displayName: 'Bicep linter'
+        inputs:
+          workingDirectory: $(System.DefaultWorkingDirectory)/.iac/
+          targetType: 'inline'
+          script: az bicep build -f main.bicep
+      
+      - task: ArchiveFiles@2
+        displayName: "Zip Function project"
+        inputs:
+          rootFolderOrFile: "publish_output_automation/Licensing.Automation.Functions"
+          includeRootFolder: false
+          archiveFile: "$(Build.ArtifactStagingDirectory)/Licensing.Automation.Functions.zip"
+      
+      - publish: $(Build.ArtifactStagingDirectory)/Licensing.Automation.Functions.zip
+        artifact: Licensing.Automation.Functions

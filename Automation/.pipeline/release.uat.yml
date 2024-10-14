@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+  tags:
+    include:
+    - 'uat.*'
+
+pool:
+  vmImage: 'windows-2022'
+
+stages:
+  - stage: build
+    displayName: build package
+    jobs:
+      - template: build\build.pack.yml
+      
+  - stage: iac
+    displayName: infrastructure
+    jobs:
+      - template: iac\deploy.yml
+        parameters:
+          connectedServiceName: 'NHSE-licensing-Test'
+          resourceGroupName: 'IPLicensing_UAT'
+          environmentalParametersFileName: 'main.parameters.uat.json'

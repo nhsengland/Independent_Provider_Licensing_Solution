@@ -1,0 +1,17 @@
+{
+    "sharePointUrl": "*",
+    "tenantId": "*",
+    "subscriptionId": "*",
+    "resourceGroup": {
+        "name": "*",
+        "region": "*"
+    },
+    "bicepParams": "*",
+    "uniqueSuffix": "*",
+    "authenticationAppRegistration": {
+        "name": "*",
+        "description": "This App registration allows specified authenticated users and identities access to the IP Licensing Function App",
+        "customRoleName": "Function.InvokeAll",
+        "customRoleDescription": "Grant access to service principals"
+    }
+}

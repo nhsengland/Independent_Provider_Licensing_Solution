@@ -1,0 +1,56 @@
+parameters:
+  deploymentDefaultLocation: 'uksouth'
+  connectedServiceName: 'default'
+  resourceGroupName: 'default'
+  environmentalParametersFileName: 'default'
+  
+jobs:
+  - job:
+    displayName: Deploy infrastructure
+    steps:
+      
+      - task: PowerShell@2
+        displayName: 'Setup variables'
+        inputs:
+           targetType: inline
+           script: |
+            $p = get-content $(System.DefaultWorkingDirectory)\.iac\parameters\${{parameters.environmentalParametersFileName}} | ConvertFrom-Json
+            $uniqueSuffix = $p.parameters.uniqueSuffix.value
+            $functionAppName = "auto-func-$uniqueSuffix"
+            $functionAppName
+            Write-Host "##vso[task.setvariable variable=functionAppName;]$functionAppName"
+
+      - download: current
+        artifact: Licensing.Automation.Functions
+
+      - task: AzureResourceManagerTemplateDeployment@3
+        name: BicepPreflightValidation
+        displayName: Run preflight validation
+        inputs:
+          connectedServiceName: ${{parameters.connectedServiceName}}
+          location: ${{parameters.deploymentDefaultLocation}}
+          deploymentMode: Validation
+          resourceGroupName: ${{parameters.resourceGroupName}}
+          csmFile: $(System.DefaultWorkingDirectory)\.iac\main.bicep
+          csmParametersFile: $(System.DefaultWorkingDirectory)\.iac\parameters\${{parameters.environmentalParametersFileName}}
+           
+      - task: AzureResourceManagerTemplateDeployment@3
+        name: BicepDeploy
+        displayName: deploy infrastructure
+        inputs:
+          connectedServiceName: ${{parameters.connectedServiceName}}
+          deploymentName: $(Build.BuildNumber)
+          location: ${{parameters.deploymentDefaultLocation}}
+          resourceGroupName: ${{parameters.resourceGroupName}}
+          csmFile: $(System.DefaultWorkingDirectory)\.iac\main.bicep
+          csmParametersFile: $(System.DefaultWorkingDirectory)\.iac\parameters\${{parameters.environmentalParametersFileName}}
+          deploymentOutputs: deploymentOutputs
+ 
+      - task: AzureFunctionApp@2
+        displayName: Azure Function App Deploy
+        inputs:
+          azureSubscription: ${{parameters.connectedServiceName}}
+          appName: $(functionAppName)
+          appType: functionApp
+          package: $(Pipeline.Workspace)\Licensing.Automation.Functions\Licensing.Automation.Functions.zip
+          deploymentMethod: runFromPackage

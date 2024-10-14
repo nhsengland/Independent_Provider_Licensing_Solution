@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    exclude:
+      - '*'
+  tags:
+    include:
+    - 'prd.*'
+
+pool:
+  vmImage: 'windows-2022'
+
+stages:
+  - stage: build
+    displayName: build package
+    jobs:
+      - template: build\build.pack.yml
+      
+  - stage: iac
+    displayName: infrastructure
+    jobs:
+      - template: iac\deploy.yml
+        parameters:
+          connectedServiceName: 'NHSE-licensing-Production'
+          resourceGroupName: 'IPLicensing_PROD'
+          environmentalParametersFileName: 'main.parameters.prd.json'

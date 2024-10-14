@@ -1,0 +1,22 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "OktaDomain": "<Okta domain>",
+    "OktaClientId": "<'Independent Provider Licensing Service API' Application Client Id>",
+    "OktaPrivateKey": "<Okta JWT private key>.  Only needed for local development",
+    "OktaLicensingGroupId": "<'Independent Provider Licensing Service Users' Group Id>",
+    "OktaApplicationGroupId": "<'Independent Provider Application Service Users' Group Id>",
+    "M365LocalDevTenantId": "<Microsoft 365 tenant Id e.g. acme.onmicrosoft.com> for local development",
+    "M365LocalDevClientId": "<Client Id of app registration for local development>",
+    "M365LocalDevCertificateThumbprint": "<certificate thumprint> for local development>",
+    "M365RootSiteUrl": "<sharepoint tenant root site url e.g. https://contoso.sharepoint.com",
+    "M365InviteRedirectUrl": "<Url users are sent to when clicking link in invite>",
+    "M365SiteOwner": "<Primary site owner>.  This is the user that will become the owner of all created Licence sites",
+    "M365SiteAdminsEntraIDGroup": "<SharePoint Admins Group>  This group will be added to the Site Collection administrators group of all created Licence sites",
+    "M365IndependentProviderTeamEntraIDGroup": "<IP Licensing Team Group>  This group will be granted permission to all Licence sites",
+    "M365SitePrefix": "<Licence Site URL prefix>  All created Licence sites will have this prefix in the URL>",
+    "GovUKNotifyAPIKey": "<Gov.Uk Notify API Key>"
+  }
+}
