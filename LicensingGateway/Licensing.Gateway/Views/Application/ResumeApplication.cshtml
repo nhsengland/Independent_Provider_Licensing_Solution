@@ -1,0 +1,32 @@
+@using Domain.Logic.Forms.Application
+@using Domain.Models.ViewModels.Application
+@using Licensing.Gateway.Models.Application
+@model ResumeApplicationViewModel;
+@{
+    ViewData["Title"] = "Current progress";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="nhsuk-form-group">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+
+            <h2 class="nhsuk-heading-m">Your Provider Licence application</h2>
+
+            <partial name="_RenderMainApplicationResponses" model='@Model.Responses' />
+
+        </fieldset>
+    </div>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" formmethod="get"
+            asp-action="@Model.Responses.Action"
+            asp-controller="@Model.Responses.Controller">
+        Continue to next question
+    </button>
+}

@@ -1,0 +1,237 @@
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models
+@model HomeViewModel;
+@{
+    ViewData["Title"] = "Check if you need a licence";
+    Layout = "~/Views/Shared/_Layout_Sub_Page.cshtml";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+
+        <partial name="_Navigation" />
+
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            <li class="nhsuk-grid-column-one-thirds nhsuk-card-group__item">
+                <div class="nhsuk-navigation-container">
+                    <nav class="nhsuk-contents-list" role="navigation" aria-label="Left hand page navigation">
+                        <ol class="nhsuk-contents-list__list">
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#WhoNeedsALicense">
+                                    Who needs a licence
+                                </a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#WhoDoesntNeedALicense">
+                                    Who does not need a licence
+                                </a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#IfYouDoNotRequireALicence">
+                                    If you do not require a licence
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </li>
+
+            <li class="nhsuk-grid-column-two-thirds nhsuk-card-group__item">
+                <div class="nhsuk-card__content">
+                    <h1 class="nhsuk-heading-xl">@ViewData["Title"]</h1>
+
+                    <div class="nhsuk-warning-callout">
+                        <h2 class="nhsuk-warning-callout__label">
+                            <span role="text">
+                                Important information
+                            </span>
+                        </h2>
+                        <p>
+                            The NHS provider licence is designed to ensure that NHS England can regulate providers that deliver healthcare services to the NHS  at scale and those providers that deliver hard to replace services.  Only certain independent providers are legally required to hold a licence. You can still bid for and provide services to the NHS if you are not required to hold a  licence.
+                        </p>
+                    </div>
+
+                    <h2 class="nhsuk-heading-l" id="WhoNeedsALicense">
+                        Who needs a licence
+                    </h2>
+                    <p>
+                        If your organisation is Care Quality Commission (CQC) registered as a provider of healthcare services for the NHS in England plus one of more of the following:
+                    </p>
+                    <ul class="nhsuk-u-padding-top-2">
+                        <li>
+                            your organisation  has  a reasonable expectation of generating applicable turnover of £10 million or more over the next 12 months; or
+                        </li>
+                        <li>
+                            a commissioner has notified NHS England that the services you provide are commissioner requested services (CRS); or
+                        </li>
+                        <li>
+                            NHS England has identified you as a hard-to-replace provider (HTR)
+                        </li>
+                    </ul>
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                What is applicable turnover?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>
+                                Applicable turnover is amounts (revenue) from the provision of NHS healthcare services in England. This does not include:
+                            </p>
+                                   
+                            <ul class="nhsuk-u-padding-top-2">
+                                <li>
+                                    VAT and other taxes
+                                </li>
+                                <li>
+                                    trade discounts
+                                </li>
+                                <li>
+                                    amounts  (revenue) from primary medical or dental services, NHS continuing healthcare or NHS funded healthcare
+                                </li>
+                            </ul>
+
+                        </div>
+                    </details>
+
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                What is a commissioner requested service (CRS)?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>
+                                CRS are essential services which must continue to be provided locally should the current provider fail, because:
+                            </p>
+                                    
+                            <ul class="nhsuk-u-padding-top-2">
+                                <li>
+                                    either there is no alternative provider close enough; or
+                                </li>
+                                <li>
+                                    removing them would increase health inequalities; or
+                                </li>
+                                <li>
+                                    removing them would make dependent services unviable.
+                                </li>
+                            </ul>
+
+                            <p>
+                                Commissioners decide which of their services are CRS and formally notify NHS England.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                What is a hard-to-replace provider (HTR)?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>
+                                A provider’s services may be of sufficient scale or complexity nationally or regionally that NHS England considers that their unavailability – due to the provider’s insolvency or quality issues – would impact on patients.
+                            </p>
+                            <p>
+                                NHS England decides which providers are HTR.
+                            </p>
+
+                        </div>
+                    </details>
+
+                    <p>
+                        The @CommonApplicationConstants.NHS_England_Provider_Team_Name will inform you by letter if any of your services are designated as CRS or your organisation is identified as HTR. If so, you only need to complete part two of the application, even if you do not meet the other licensing criteria.
+                    </p>
+
+                    <h2 class="nhsuk-heading-l" id="WhoDoesntNeedALicense">
+                        Who does not need a licence
+                    </h2>
+                    <p>
+                        Some independent providers are exempt from the need to hold a licence.
+                    </p>
+                    <p>
+                        You do not need to apply for a licence if:
+                    </p>
+
+                    <ul>
+                        <li>
+                            your organisation  does not have a reasonable expectation of generating applicable turnover of £10 million or more over the next 12 months;
+                        </li>
+                        <li>
+                            your organisation only provides NHS primary medical or NHS dental services. These are often referred to as General Medical Services (GMS), Personal Medical Services (PMS), Alternative Provider Medical Services (APMS), and General Dental Services (GDS) or Personal Dental Services (PDS)
+                        </li>
+                        <li>
+                            your organisation only provides NHS continuing healthcare or NHS-funded nursing care
+                        </li>
+                    </ul>
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                What is NHS continuing healthcare?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>
+                                 NHS continuing healthcare is a package of care arranged and funded solely through the NHS for individuals aged 18 or over who have been assessed as having a primary health need.
+                            </p>
+
+                        </div>
+                    </details>
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                What is NHS funded nursing care?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>
+                                 NHS funded nursing care is where the NHS pays for the nursing care component of nursing home fees.
+                            </p>
+
+                        </div>
+                    </details>
+
+
+                    <h2 class="nhsuk-heading-l" id="IfYouDoNotRequireALicence">
+                        If you do not require a licence
+                    </h2>
+
+                    <p>
+                        Holding an NHS provider licence is not a requirement for all independent providers and does not impact your ability to bid for NHS-funded contract opportunities.
+                    </p>
+                    <p>
+                        You can still bid for and provide services to the NHS if you are not required to hold a licence.
+                    </p>
+
+                    <div class="nhsuk-action-link">
+                        <a class="nhsuk-action-link__link" asp-area="" asp-controller="Home" asp-action="HowToApplyForANHSProviderLicence">
+                            <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="36" height="36">
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
+                            </svg>
+                            <span class="nhsuk-action-link__text">Find out how to apply for a licence</span>
+                        </a>
+                    </div>
+
+                    <div class="nhsuk-warning-callout">
+                        <h3 class="nhsuk-warning-callout__label">
+                            <span role="text">
+                                <span class="nhsuk-u-visually-hidden">Important: </span>
+                                Get Support
+                            </span>
+                        </h3>
+                        <p>If you have any questions about the licence application process, contact the @CommonApplicationConstants.NHS_England_Provider_Team_Name at <a href="mailto:england.licensing@nhs.net" title="Click to email the @CommonApplicationConstants.NHS_England_Provider_Team_Name">england.licensing@nhs.net</a></p>
+                        <p>A team member will normally reply within 5 working days.</p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+
+    </main>
+</div>

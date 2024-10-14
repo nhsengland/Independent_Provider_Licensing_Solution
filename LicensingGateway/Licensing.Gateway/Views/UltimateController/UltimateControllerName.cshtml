@@ -1,0 +1,96 @@
+@using Domain.Logic.Forms.Application
+@using Licensing.Gateway.Models.UltimateController
+@model UltimateControllerNameViewModel;
+@{
+    ViewData["Title"] = "Enter the registered name of the ultimate controller(s)";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton" />
+
+@using (Html.BeginForm())
+{
+    var classAttribute = "";
+    var showError = false;
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute = "nhsuk-form-group--error";
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            @if (string.IsNullOrWhiteSpace(Model.Name))
+            {
+                <div class="nhsuk-error-summary__body">
+                    <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                        <li>
+                            <a href="#form-error">Please enter the name of the ultimate controller(s)</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    <label for="@nameof(Model.Name)">
+                        @ViewData["Title"]
+                    </label>
+                </h1>
+            </legend>
+
+            <h2 class="nhsuk-heading-s">
+                Where can I find this information?
+            </h2>
+
+            <p>
+                You can find information on Companies House or by consulting legal documents like shareholder agreements or corporate governance documents.
+            </p>
+
+            <partial name="_UltimateController_PopOut" />
+
+            @if (showError)
+            {
+                @if (string.IsNullOrWhiteSpace(Model.Name))
+                {
+                    <span class="nhsuk-error-message" id="form-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Enter the name of the ultimate controller(s)
+                    </span>
+                }
+            }
+
+            <div class="nhsuk-form-group @classAttribute">
+                @Html.TextBoxFor(m => m.Name, new { @id = $"{nameof(Model.Name)}", @class = "nhsuk-input" })
+            </div>
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+
+    </div>
+
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-row">
+            <div class="nhsuk-grid-column-one-quarter">
+                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="UltimateControllerName">
+                    Save and continue
+                </button>
+            </div>
+            <div class="nhsuk-grid-column-one-quarter">
+                @using (Html.BeginForm())
+                {
+                    <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit" asp-controller="@ApplicationControllerConstants.Controller_Name_Application"
+                            asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+                        Exit
+                    </button>
+                }
+            </div>
+        </div>
+    </div>
+}

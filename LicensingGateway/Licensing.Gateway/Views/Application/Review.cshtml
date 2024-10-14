@@ -1,0 +1,69 @@
+@using Domain.Logic.Forms.Application
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models.Application
+@model ApplicationReviewViewModel;
+@{
+    ViewData["Title"] = "Review and submit your application";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="nhsuk-form-group">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+        </fieldset>
+    </div>
+
+    <partial name="_RenderMainApplicationResponses" model='@Model.ApplicationReviewData.Responses' />
+
+    @if (Model.ApplicationReviewData.RuleOutcomeDTO.IsSuccess)
+    {
+        <h2 class="nhsuk-heading-m nhsuk-u-padding-top-4">Now send your application</h2>
+
+        <p>By submitting this application you are confirming that:</p>
+
+        <ul>
+            <li>I have the authority to make this application.</li>
+            <li>The information provided on the application is accurate, complete, and not misleading, to the best of my knowledge and belief.</li>
+            <li>I undertake that any information that has been entered on the application inaccurately will be corrected promptly, by way of revised information provided to NHS England at <a href="mailto:england.licensing@nhs.net" title="Click to email the @CommonApplicationConstants.NHS_England_Provider_Team_Name">england.licensing@nhs.net</a>.</li>
+            <li>
+                By providing a contact email address I consent to the receipt of all notices electronically in accordance with section 149 of the Health and Social Care Act 2012
+            </li>
+            <li>I acknowledge that NHS England will use the information provided on the application, including personal data, and any other relevant information that NHS England obtains or receives, solely for the purpose of performing its regulatory functions.</li>
+        </ul>
+    }
+    else
+    {
+        <h2 class="nhsuk-heading-m nhsuk-u-padding-top-4">Review your answers</h2>
+
+        <p>We have identified that you have not completed all questions necessary to complete this application, please review your answers above:</p>
+
+        <ul>
+            @foreach (var error in Model.ApplicationReviewData.RuleOutcomeDTO.ErrorMessages)
+            {
+                <li>@error</li>
+            }
+        </ul>
+    }
+
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-third">
+            @if (Model.ApplicationReviewData.RuleOutcomeDTO.IsSuccess)
+            {
+                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="Submit">
+                    Confirm and send application
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-third">
+            <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit" asp-controller="@ApplicationControllerConstants.Controller_Name_Application" asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+                Exit
+            </button>
+        </div>
+    </div>
+}

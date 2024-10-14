@@ -1,0 +1,79 @@
+@using Domain.Logic.Forms.Helpers
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models.Application
+@using Microsoft.AspNetCore.Html
+@model ApplicationCodeViewModel;
+@{
+    ViewData["Title"] = "Enter your application code";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    var classAttribute = "";
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute = "nhsuk-form-group--error";
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            <div class="nhsuk-error-summary__body">
+                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                    <li>
+                        <a href="#form-error">
+                            @if (string.IsNullOrWhiteSpace(Model.ApplicationCode))
+                            {
+                                @:Enter your application code
+                            }
+                            else
+                            {
+                                @:Either the number of characters in your application code does not match the required length, or the code has not been recognised. Review your application code.
+                            }
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    <label for="@nameof(Model.ApplicationCode)">
+                        @ViewData["Title"]
+                    </label>
+                </h1>
+            </legend>
+
+            <p>
+                Your application code is a 7-digit number. You can find it in the email from the @CommonApplicationConstants.NHS_England_Provider_Team_Name. Or it will be at the top of the letter from NHS England advising you to apply for an NHS provider licence.
+            </p>
+
+            <div class="@classAttribute">
+                @if (Model.ValidationFailure)
+                {
+                    <span class="nhsuk-error-message" id="form-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Your application code is invalid
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ApplicationCode, HtmlHelperAttributeFactory.CreateForApplicationCode(nameof(Model.ApplicationCode)))
+            </div>
+
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+
+    </div>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ApplicationCode">
+        Continue
+    </button>
+}

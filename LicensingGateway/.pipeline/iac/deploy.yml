@@ -1,0 +1,96 @@
+parameters:
+  deploymentDefaultLocation: 'uksouth'
+  connectedServiceName: 'default'
+  resourceGroupName: 'default'
+  environmentalParametersFileName: 'default'
+  keyVaultName: 'default'
+
+jobs:
+  - job:
+    displayName: Deploy infrastructure
+    steps:
+      - task: AzureKeyVault@2
+        inputs:
+          azureSubscription: ${{parameters.connectedServiceName}}
+          KeyVaultName: ${{parameters.keyVaultName}}
+          SecretsFilter: '*'
+          RunAsPreJob: false
+
+      - task: PowerShell@2
+        displayName: 'Setup variables'
+        inputs:
+           targetType: inline
+           script: |
+            $p = get-content $(System.DefaultWorkingDirectory)\.iac\parameters\${{parameters.environmentalParametersFileName}} | ConvertFrom-Json
+            $sqlInstanceName = $p.parameters.sqlInstanceName.value
+            $sqlInstanceName
+            Write-Host "##vso[task.setvariable variable=sqlInstanceName;]$sqlInstanceName"
+            $sqlDatabaseName = $p.parameters.sqlDatabaseName.value
+            $sqlDatabaseName
+            Write-Host "##vso[task.setvariable variable=sqlDatabaseName;]$sqlDatabaseName"
+            $webAppName = $p.parameters.webAppName.value
+            $webAppName
+            Write-Host "##vso[task.setvariable variable=webAppName;]$webAppName"
+            $functionAppName = $p.parameters.functionAppName.value
+            $functionAppName
+            Write-Host "##vso[task.setvariable variable=functionAppName;]$functionAppName"
+
+      - download: current
+        artifact: Licensing.Gateway.WebApp
+
+      - download: current
+        artifact: Licensing.Gateway.Migration
+
+      - download: current
+        artifact: Licensing.Gateway.Functions
+
+      - task: AzureResourceManagerTemplateDeployment@3
+        name: BicepPreflightValidation
+        displayName: Run preflight validation
+        inputs:
+          connectedServiceName: ${{parameters.connectedServiceName}}
+          location: ${{parameters.deploymentDefaultLocation}}
+          deploymentMode: Validation
+          resourceGroupName: ${{parameters.resourceGroupName}}
+          csmFile: $(System.DefaultWorkingDirectory)\.iac\main.bicep
+          csmParametersFile: $(System.DefaultWorkingDirectory)\.iac\parameters\${{parameters.environmentalParametersFileName}}
+           
+      - task: AzureResourceManagerTemplateDeployment@3
+        name: BicepDeploy
+        displayName: deploy infrastructure
+        inputs:
+          connectedServiceName: ${{parameters.connectedServiceName}}
+          deploymentName: $(Build.BuildNumber)
+          location: ${{parameters.deploymentDefaultLocation}}
+          resourceGroupName: ${{parameters.resourceGroupName}}
+          csmFile: $(System.DefaultWorkingDirectory)\.iac\main.bicep
+          csmParametersFile: $(System.DefaultWorkingDirectory)\.iac\parameters\${{parameters.environmentalParametersFileName}}
+          deploymentOutputs: deploymentOutputs
+
+      - task: SqlAzureDacpacDeployment@1
+        inputs:
+          azureSubscription: ${{parameters.connectedServiceName}}
+          AuthenticationType: 'servicePrincipal'
+          deployType: 'SqlTask'
+          SqlFile: $(Pipeline.Workspace)\Licensing.Gateway.Migration\migrations-script.sql
+          IpDetectionMethod: 'AutoDetect'
+          ServerName: $(sqlInstanceName).database.windows.net
+          DatabaseName: $(sqlDatabaseName)
+
+      - task: AzureWebApp@1
+        displayName: Web App Deploy
+        inputs:
+          azureSubscription: ${{parameters.connectedServiceName}}
+          appName: $(webAppName)
+          appType: webApp
+          package: $(Pipeline.Workspace)\Licensing.Gateway.WebApp\Licensing.Gateway.WebApp.zip
+          deploymentMethod: zipDeploy
+
+      - task: AzureFunctionApp@2
+        displayName: Azure Function App Deploy
+        inputs:
+          azureSubscription: ${{parameters.connectedServiceName}}
+          appName: $(functionAppName)
+          appType: functionApp
+          package: $(Pipeline.Workspace)\Licensing.Gateway.Functions\Licensing.Gateway.Functions.zip
+          deploymentMethod: zipDeploy

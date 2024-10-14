@@ -1,0 +1,176 @@
+@using Domain.Logic.Forms.Application
+@using Licensing.Gateway.Models.Application
+@using Licensing.Gateway.Models.Directors
+@model DirectorsViewModel;
+
+@{
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+
+    if (Model.Directors.Count == 0)
+    {
+        <partial name="_BackButton" />
+    }
+    else
+    {
+        <partial name="_BackButton_Directors" model="new BackButtonViewModel() { SubmitPageTo = Domain.Models.Database.ApplicationPage.CorporateBodies }" />
+    }
+}
+
+<div class="nhsuk-form-group">
+    <fieldset class="nhsuk-fieldset">
+        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+            <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                @if(Model.Directors.Count == 0)
+                {
+                    <text>
+                        Please provide the details of individual Directors or equivalents for @Model.GroupName
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        Please review details of the individual Directors or equivalents for @Model.GroupName
+                    </text>
+                }
+            </h1>
+        </legend>
+
+        @if (Model.Directors.Count == 0)
+        {
+            <p>
+                You will need:
+            </p>
+
+            <ul>
+                <li>first name and last name</li>
+                <li>date of birth</li>
+            </ul>
+        }
+
+        <p>
+            We require this information to check that directors (or equivalent) of the applicant organisation comply with licence condition G3 Fit and Proper persons as Directors. Before licensing, we will check the named individuals are not listed as disqualified directors
+        </p>
+
+        <details class="nhsuk-details">
+            <summary class="nhsuk-details__summary">
+                <span class="nhsuk-details__summary-text">
+                    Who is considered a director?
+                </span>
+            </summary>
+            <div class="nhsuk-details__text">
+                <ul>
+                    <li>
+                        Individuals who have been formally appointed as directors of registered companies under the Companies Act 2006
+                    </li>
+                    <li>
+                        Those performing equivalent or similar functions to directors even if not formally appointed
+                    </li>
+                </ul>
+            </div>
+        </details>
+
+        <div class="nhsuk-u-padding-bottom-4"></div>
+    </fieldset>
+
+</div>
+
+@if (Model.Directors.Any())
+{
+    <table role="table" class="nhsuk-table-responsive">
+        <caption class="nhsuk-table__caption">Directors</caption>
+        <thead role="rowgroup" class="nhsuk-table__head">
+            <tr role="row">
+                <th role="columnheader" class="" scope="col">
+                    First name
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Last name
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Date of birth
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Organisation
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Edit
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Remove
+                </th>
+            </tr>
+        </thead>
+        <tbody class="nhsuk-table__body">
+            @foreach (var director in Model.Directors)
+            {
+                <tr role="row" class="nhsuk-table__row">
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">First name </span>@director.Forename
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Last name </span>@director.Surname
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Date of birth</span>
+                        <time datetime="@director.DateOfBirth.ToString("yyyy-MM-dd")">@director.DateOfBirth.ToString("dd-MM-yyyy")</time>
+                        
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Organisation</span>@Model.GroupName
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Edit</span>
+                        @using (Html.BeginForm())
+                        {
+                            <button class="nhsuk-button-not-button" type="submit" asp-action="CorporateDirectorEdit">
+                                Edit <span class="nhsuk-u-visually-hidden">@director.Forename @director.Surname</span>
+                            </button>
+                            @Html.Hidden("Id", director.Id)
+                        }
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Remove</span>
+                        @using (Html.BeginForm())
+                        {
+                            <button class="nhsuk-button-not-button" type="submit" asp-action="CorporateDirectorRemove">
+                                Remove <span class="nhsuk-u-visually-hidden">@director.Forename @director.Surname</span>
+                            </button>
+                            @Html.Hidden("Id", director.Id)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="nhsuk-u-padding-bottom-4"></div>
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="@Domain.Models.Database.ApplicationPage.CorporateDirectors">
+                    Save and continue
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                    <button class="nhsuk-button nhsuk-button--secondary" data-module="nhsuk-button" type="submit" asp-action="CorporateDirectorAdd">
+                    Add a director
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit" asp-controller="@ApplicationControllerConstants.Controller_Name_Application" asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+                    Exit
+                </button>
+            }
+        </div>
+    </div>
+</div>

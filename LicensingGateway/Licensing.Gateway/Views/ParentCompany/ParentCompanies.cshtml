@@ -1,0 +1,101 @@
+@using Domain.Logic.Forms.Application
+@using Licensing.Gateway.Models.Directors.ParentCompanies
+@model ParentCompaniesViewModel;
+@{
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+<partial name="_BackButton" />
+
+<h1 class="nhsuk-heading-l">
+    @if (Model.Groups.Count == 0)
+    {
+        <text>
+            Please provide details of parent companies for @Model.ProviderName
+        </text>
+    }
+    else
+    {
+        <text>
+            Please review the details of parent companies for @Model.ProviderName
+        </text>
+    }
+</h1>
+
+@if (Model.Groups.Any())
+{
+    <table role="table" class="nhsuk-table-responsive">
+        <caption class="nhsuk-table__caption">Parent companies</caption>
+        <thead role="rowgroup" class="nhsuk-table__head">
+            <tr role="row">
+                <th role="columnheader" class="" scope="col">
+                    Name
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Edit
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Remove
+                </th>
+            </tr>
+        </thead>
+        <tbody class="nhsuk-table__body">
+            @foreach (var group in Model.Groups)
+            {
+                <tr role="row" class="nhsuk-table__row">
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Name </span>@group.Name
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Edit</span>
+                        @using (Html.BeginForm())
+                        {
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ParentCompanyNameEdit" asp-route-groupId="@group.Id">
+                                Edit
+                            </a>
+                        }
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Remove</span>
+                        @using (Html.BeginForm())
+                        {
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ParentCompanyDelete" asp-route-groupId="@group.Id">
+                                Remove
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="nhsuk-u-padding-bottom-4"></div>
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="@Domain.Models.Database.ApplicationPage.ParentCompanies">
+                    Save and continue
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                    <button class="nhsuk-button nhsuk-button--secondary" data-module="nhsuk-button" type="button" onclick="location.href='parent-company-name-add'">
+                    Add a parent company
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit" asp-controller="@ApplicationControllerConstants.Controller_Name_Application" asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+                    Exit
+                </button>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+@using Domain.Logic.Forms.Application
+<h1>
+    Session Timeout
+</h1>
+
+<h2>
+    Your session has expired
+</h2>
+
+<p>
+    We apologise for any inconvenience. Your session has timed out due to inactivity. But don't worry! The data you entered has been saved.
+</p>
+
+<h3>
+    What you can do:
+</h3>
+
+<ul>
+    <li>
+        <b>Restart your application</b>: Return to the start of your <a asp-action="@ApplicationControllerConstants.Controller_Application_Method_ApplicationCode">application</a>, the previous data you have entered has been saved and you will be returned to where you left off after entering your application code.
+    </li>
+</ul>
+
+<b>Note</b>: If there is no activity for 20 minutes, your session will automatically expire.
+
+<p>
+    Thank you for using our service.
+</p>

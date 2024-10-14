@@ -1,0 +1,76 @@
+@using Licensing.Gateway.Models.Directors
+@model DirectorRemoveConfirmViewModel
+@{
+    ViewData["Title"] = "Confirm that you want to remove this director";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton" />
+
+@using (Html.BeginForm())
+{
+    var classAttribute = "";
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute = "nhsuk-form-group--error";
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            <div class="nhsuk-error-summary__body">
+                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                    <li>
+                        <a href="#form-error">Select an option</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+
+            <p>Director name: @Model.Director.Forename @Model.Director.Surname</p>
+
+            @if (Model.ValidationFailure)
+            {
+                <span class="nhsuk-error-message" id="form-error">
+                    <span class="nhsuk-u-visually-hidden">Error:</span> Select an option
+                </span>
+            }
+
+
+            <div class="@classAttribute">
+                <div class="nhsuk-radios nhsuk-u-padding-bottom-4">
+                    @for (var i = 0; i < Model.Values.Length; i++)
+                    {
+                        var value = Model.Values[i];
+                        var id = $"{nameof(Model.Confirmation)}-{i}";
+                        <div class="nhsuk-radios__item">
+                            @Html.RadioButtonFor(m => m.Confirmation, value, new { id = id, @class = "nhsuk-radios__input" })
+                            @Html.LabelFor(m => m.Confirmation, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+
+    </div>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ParentCompanyDirectorRemoveConfirm">
+        Save and continue
+    </button>
+}

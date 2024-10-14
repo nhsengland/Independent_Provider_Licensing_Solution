@@ -1,0 +1,43 @@
+@using Domain.Logic.Forms.Helpers.Session
+@using Domain.Logic.Forms.PreApplication
+@using Licensing.Gateway
+@using Licensing.Gateway.Models.PreApplication
+@inject ISessionOrchestration sessionOrchestration
+@{
+    ViewData["Title"] = "Application submitted";
+    Layout = "~/Views/Shared/_Layout_Application_Part_1.cshtml";
+}
+@{
+    var referrenceId = sessionOrchestration.Get<string>(PreApplicationFormConstants.SessionPreApplicationReferenceId);
+}
+
+<div class="nhsuk-card nhsuk-card--confirmation nhsuk-u-margin-top-0 nhsuk-u-margin-bottom-4">
+    <div class="nhsuk-card__content">
+        <h1 class="nhsuk-card__title nhsuk-u-margin-bottom-4">
+            Part one submitted
+        </h1>
+
+        <p class="nhsuk-u-font-size-24">
+            Your reference number
+            <br>
+            <strong class="nhsuk-u-font-size-32">@referrenceId</strong>
+        </p>
+    </div>
+</div>
+
+<p>We have sent you a confirmation email.</p>
+
+<p><a onclick="window.print()" href="#">Print this page</a></p>
+
+<h1 class="nhsuk-heading-m">What happens next</h1>
+
+<p>
+    The NHS England Independent Providers team will review your answers and advise whether you are required to complete part two of the application form.  
+</p>
+<p>
+    You will typically get a decision on your application within 5 working days of submitting it, unless queries or concerns are raised.
+</p>
+
+<p>
+    <a asp-controller="Feedback" asp-action="Index" class="govuk-link">What did you think of this service?</a> (takes 30 seconds)
+</p>

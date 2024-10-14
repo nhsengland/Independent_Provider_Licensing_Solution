@@ -1,0 +1,31 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+        "TimerTriggerImportCQCProvidersThatHaveChanged": "0 00 21 * * *",
+        "APPINSIGHTS_INSTRUMENTATIONKEY": "",
+        "SQL:DatabaseErrorNumbersForRetry": "-2,40197,40501,11001",
+        "SQL:MaxRetryCount": 5,
+        "SQL:MaxRetryDelayInSeconds": 5,
+        "CQC:API:BaseUrl": "https://api.service.cqc.org.uk/public/v1",
+        "CQC:API:PageSize": 5000,
+        "CQC:API:AmendedProvidersNumberOfDaysInThePast": 5,
+        "CQC:API:OcpApimSubscriptionKey": "ApiKey",
+        "FunctionConfiguration:CQC:RetryPolicyNumberOfAttempts": 10,
+        "FunctionConfiguration:CQC:RetryPolicyFirstRetryInterval": 1,
+        "FunctionConfiguration:CQC:RetryPolicyBackoffCoefficient": 2,
+        "FunctionConfiguration:CQC:DelayInMinuets": 5,
+        "EmailConfiguration:APIBaseAddress": "https://localhost:7210/",
+        "EmailConfiguration:APIAudienceHeader": "api//managed-identity-of-target",
+        "EmailConfiguration:PreApplicationTemplateID": "51c17d9d-8f09-459f-856b-2ec1199291bf",
+        "EmailConfiguration:ApplicationTemplateID": "eb579394-99a4-4695-aefd-70ebb738ee59",
+        "EmailConfiguration:MainApplicationSaveAndExitTemplateID": "7258c7c7-93c6-4257-a7b6-38aa66f0f056",
+        "QueueClientConfiguration:EmailNotificationQueueName": "email-notification",
+        "QueueClientConfiguration:StorageAccountName": "UseDevelopmentStorage=true"
+    },
+    "ConnectionStrings": {
+        "LicensingGateway": "Server=(localdb)\\MSSQLLocalDB;Database=LicensingGateway;Trusted_Connection=True;TrustServerCertificate=True",
+        "LicenceHolder": "Server=(localdb)\\MSSQLLocalDB;Database=LicenseHolder;Trusted_Connection=True;TrustServerCertificate=True"
+    }
+}

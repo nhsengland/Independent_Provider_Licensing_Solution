@@ -1,0 +1,28 @@
+@using Domain.Models.Database.DTO
+@model List<DirectorDTO>
+<table class="nhsuk-table">
+    <caption class="nhsuk-table__caption"></caption>
+    <thead role="rowgroup" class="nhsuk-table__head">
+        <tr role="row">
+            <th role="columnheader" class="" scope="col">
+                Name
+            </th>
+            <th role="columnheader" class="" scope="col">
+                Date of birth
+            </th>
+        </tr>
+    </thead>
+    <tbody class="nhsuk-table__body">
+        @{
+            foreach (var director in Model)
+            {
+                <tr role="row" class="nhsuk-table__row">
+                    <td class="nhsuk-table__cell">@director.Forename @director.Surname</td>
+                    <td class="nhsuk-table__cell ">
+                        <time datetime="@director.DateOfBirth.ToString("yyyy-MM-dd")">@director.DateOfBirth.ToString("dd-MM-yyyy")</time>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

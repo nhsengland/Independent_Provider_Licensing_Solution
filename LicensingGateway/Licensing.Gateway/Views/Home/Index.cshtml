@@ -1,0 +1,80 @@
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models
+@model HomeViewModel;
+@{
+    ViewData["Title"] = "Index page";
+    Layout = "~/Views/Shared/_Layout_Home_Page.cshtml";
+}
+
+<h1 class="nhsuk-heading-xl">NHS Provider Licence</h1>
+
+<section class="nhsuk-section">
+    <div class="nhsuk-width-container app-width-container">
+
+        <p>
+            The NHS provider licence is a tool for regulating providers of healthcare services to the NHS in England. Only certain independent providers are required to hold a licence.
+        </p>
+
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-m"><a asp-area="" asp-controller="Home" asp-action="CheckIfYouNeedALicense">Check if you need a licence</a></h2>
+                        <p class="nhsuk-card__description">Find out if you need an NHS provider licence and how to apply for one.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-m"><a href="@Model.LicenceHolderApplicationURL">Already have a licence?</a></h2>
+                        <p class="nhsuk-card__description">Sign in to your account.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-m"><a href="@Model.LicenceComplianceURL">How to comply with your licence</a></h2>
+                        <p class="nhsuk-card__description">Access resources for self-certification, governance standards and continuity of service conditions.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-m"><a href="@Model.MonitoringAndEnforcementURL">Monitoring and enforcement</a></h2>
+                        <p class="nhsuk-card__description">Find out how we regulate you as a licensed provider and how to revoke your licence if required.</p>
+                    </div>
+                </div>
+            </li>
+            <li class="nhsuk-grid-column-one-third nhsuk-card-group__item">
+                <div class="nhsuk-card nhsuk-card--clickable">
+                    <div class="nhsuk-card__content">
+                        <h2 class="nhsuk-card__heading nhsuk-heading-m">
+                            <a href="@Model.RegisterOfLicensedProvidersURL">
+                                Register of licensed healthcare providers
+                            </a>
+                        </h2>
+                        <p class="nhsuk-card__description">Access the registers of NHS providers and licensed independent providers.</p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            <li class="nhsuk-grid-column-one-half nhsuk-card-group__item">
+                <div class="nhsuk-informal-callout">
+                    <h3 class="nhsuk-informal-callout__label">
+                        <span role="text">
+                            <span class="nhsuk-u-visually-hidden">Important: </span>
+                            Get Support
+                        </span>
+                    </h3>
+                    <p>If you have any issues logging in or applying for a licence, please email <a href="mailto:england.licensing@nhs.net" title="Click to email the @CommonApplicationConstants.NHS_England_Provider_Team_Name">england.licensing@nhs.net</a></p>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+</section>

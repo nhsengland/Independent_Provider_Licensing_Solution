@@ -1,0 +1,12 @@
+@using Licensing.Gateway.Models.Account
+@model SaveAndExitViewModel;
+
+<div class="nhsuk-grid-row">
+    <h1>
+        Your application has been saved
+    </h1>
+
+    <p>We have sent a confirmation email to: @Model.EmailAddress</p>
+
+    <p>You can resume your application at any time via the Provider Licensing start page on <a asp-area="" asp-controller="Application" asp-action="@Domain.Models.Database.ApplicationPage.ApplicationCode" title="click here to re-start your application">NHS England.co.uk</a></p>
+</div>

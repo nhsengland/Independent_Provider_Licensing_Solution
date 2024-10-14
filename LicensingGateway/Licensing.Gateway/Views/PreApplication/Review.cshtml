@@ -1,0 +1,185 @@
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models.PreApplication
+@model ReviewViewModel;
+@{
+    ViewData["Title"] = "Review";
+    Layout = "~/Views/Shared/_Layout_Application_Part_1.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <partial name="_BackButton" />
+
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    Check your answers
+                </h1>
+            </legend>
+
+            <h2 class="nhsuk-heading-m">Part one application questions</h2>
+
+            <dl class="nhsuk-summary-list">
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Does the applicant have a live CQC Provider ID?
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.IsCQCRegistered
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="IsRegisteredWithCQC">
+                            Change<span class="nhsuk-u-visually-hidden"> applicants CQC provider ID</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        CQC Provider ID
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.CQCProviderID
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Registered Provider name
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.CQCProviderInformation_Name
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="CQCProviderChangeName">
+                            Change<span class="nhsuk-u-visually-hidden"> provider name</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Registered address
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.CQCProviderInformation_Address
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="CQCProviderChangeAddress">
+                            Change<span class="nhsuk-u-visually-hidden"> provider address</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Phone number
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.CQCProviderInformation_PhoneNumber
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="CQCProviderChangePhoneNumber">
+                            Change<span class="nhsuk-u-visually-hidden"> provider phone number</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Provide health care services for the NHS in England
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.ProvidesHealthCareService
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ProvidesHealthCareServices">
+                            Change<span class="nhsuk-u-visually-hidden"> provides health care services</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        CQC regulated activities
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.CQCRegulatedActivites
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="CQCRegulatedActivites">
+                            Change<span class="nhsuk-u-visually-hidden"> CQC regulated activities</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Delivery of one or more exempt healthcare services to the NHS in England
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.ExclusiveServices
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ExclusiveServices">
+                            Change<span class="nhsuk-u-visually-hidden"> exempt heathcare services</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Applicable turnover for the next 12 months
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.Earnings
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="Earnings">
+                            Change<span class="nhsuk-u-visually-hidden"> applicable turnover</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Contact details
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        <p>@Model.ContactDetails_Forename</p>
+                        <p>@Model.ContactDetails_Surname</p>
+                        <p>@Model.ContactDetails_JobTitle</p>
+                        <p>@Model.ContactDetails_PhoneNumber</p>
+                        <p>@Model.ContactDetails_Email</p>
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="ContactDetails">
+                            Change<span class="nhsuk-u-visually-hidden"> contact details</span>
+                        </a>
+                    </dd>
+                </div>
+
+            </dl>
+
+        </fieldset>
+    </div>
+
+    <h2 class="nhsuk-heading-m">Submit part one of the application</h2>
+
+    <p>
+        By submitting part one of the application, you confirm that, to the best of your knowledge, the details provided are correct.
+    </p>
+
+    <p>
+        Part one of the application will be sent to the NHS England Independent Providers team for review.
+    </p>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="Submit">
+        Accept and submit
+    </button>
+}

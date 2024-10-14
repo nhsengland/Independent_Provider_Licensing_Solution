@@ -1,0 +1,112 @@
+@using Domain.Logic.Forms.Helpers
+@using Licensing.Gateway.Models.Application
+@using Licensing.Gateway.Models.Directors
+@model DirectorDateOfBirthViewModel;
+@{
+    ViewData["Title"] = "What is their date of birth?";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton" />
+
+@using (Html.BeginForm())
+{
+    var classAttribute_day = "";
+    var classAttribute_month = "";
+    var classAttribute_year = "";
+    var classAttribute_date = "";
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute_date = "nhsuk-form-group--error";
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            @foreach (var error in Model.FailureMessages)
+            {
+                <div class="nhsuk-error-summary__body">
+                    <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                        <li>
+                            <a href="#form-date">@error</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+            @if (Model.Day == null)
+            {
+                classAttribute_day = "nhsuk-input--error";
+            }
+
+            @if (Model.Month == null)
+            {
+                classAttribute_month = "nhsuk-input--error";
+            }
+
+            @if (Model.Year == null)
+            {
+                classAttribute_year = "nhsuk-input--error";
+            }
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+
+            <div class="nhsuk-hint" id="example-hint">
+                For example, 15 3 @DateTime.UtcNow.AddYears(-40).Year
+            </div>
+
+            <div class="nhsuk-date-input @classAttribute_date" id="form-date">
+                @if (Model.ValidationFailure && Model.FailureMessages.Count > 0)
+                {
+                    <span class="nhsuk-error-message" id="form-error-year">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @Model.FailureMessages.First()
+                    </span>
+                }
+                <div class="nhsuk-date-input__item">
+                    <div class="nhsuk-form-group">
+                        <label class="nhsuk-label nhsuk-date-input__label" for="@nameof(Model.Day)">
+                            Day
+                        </label>
+                        @Html.TextBoxFor(m => m.Day, HtmlHelperAttributeFactory.CreateForDate_DayOrMonth(nameof(Model.Day), classAttribute_day))
+                    </div>
+                </div>
+                <div class="nhsuk-date-input__item">
+                    <div class="nhsuk-form-group">
+                        <label class="nhsuk-label nhsuk-date-input__label" for="@nameof(Model.Month)">
+                            Month
+                        </label>
+                        @Html.TextBoxFor(m => m.Month, HtmlHelperAttributeFactory.CreateForDate_DayOrMonth(nameof(Model.Month), classAttribute_month))
+                    </div>
+                </div>
+                <div class="nhsuk-date-input__item">
+                    <div class="nhsuk-form-group">
+                        <label class="nhsuk-label nhsuk-date-input__label" for="@nameof(Model.Year)">
+                            Year
+                        </label>
+                        @Html.TextBoxFor(m => m.Year, HtmlHelperAttributeFactory.CreateForDate_Year(nameof(Model.Year), classAttribute_year))
+                    </div>
+                </div>
+            </div>
+
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+
+    </div>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="DirectorDateOfBirth">
+        Save and continue
+    </button>
+}

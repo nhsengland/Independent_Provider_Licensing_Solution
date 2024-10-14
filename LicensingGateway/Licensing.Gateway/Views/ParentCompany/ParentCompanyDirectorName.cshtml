@@ -1,0 +1,111 @@
+@using Domain.Logic.Forms.Application
+@using Licensing.Gateway.Models.Application
+@using Licensing.Gateway.Models.Directors
+@model DirectorNameViewModel;
+@{
+    ViewData["Title"] = "What is their name?";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton_Directors" model="new BackButtonViewModel() { SubmitPageTo = Domain.Models.Database.ApplicationPage.ParentCompanyDirectors }" />
+
+@using (Html.BeginForm())
+{
+    var classAttribute_Forname = "";
+    var classAttribute_Surname = "";
+
+    @if (Model.ValidationFailure)
+    {
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            @if (string.IsNullOrWhiteSpace(Model.Forename))
+            {
+                classAttribute_Forname = "nhsuk-form-group--error";
+                <div class="nhsuk-error-summary__body">
+                    <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                        <li>
+                            <a href="#form-error-forname">Please provide a first name</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+            @if (string.IsNullOrWhiteSpace(Model.Surname))
+            {
+                classAttribute_Surname = "nhsuk-form-group--error";
+                <div class="nhsuk-error-summary__body">
+                    <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                        <li>
+                            <a href="#form-error-surname">Please provide a last name</a>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+
+            @if (Model.ValidationFailure)
+            {
+                if (string.IsNullOrWhiteSpace(Model.Forename))
+                {
+                    <span class="nhsuk-error-message" id="form-error-forname">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Provide a first name
+                    </span>
+                }
+            }
+
+            <div class="nhsuk-form-group @classAttribute_Forname">
+                <label class="nhsuk-label" for="@nameof(Model.Forename)">
+                    First name
+                </label>
+                @Html.TextBoxFor(m => m.Forename, new { @id = $"{nameof(Model.Forename)}", @class = "nhsuk-input" })
+            </div>
+
+
+            @if (Model.ValidationFailure)
+            {
+                if (string.IsNullOrWhiteSpace(Model.Surname))
+                {
+                    <span class="nhsuk-error-message" id="form-error-surname">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Provide a last name
+                    </span>
+                }
+            }
+
+            <div class="nhsuk-form-group @classAttribute_Surname">
+                <label class="nhsuk-label" for="@nameof(Model.Surname)">
+                    Last name
+                </label>
+                @Html.TextBoxFor(m => m.Surname, new { @id = $"{nameof(Model.Surname)}", @class = "nhsuk-input" })
+            </div>
+
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+    </div>
+
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-third">
+            <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ParentCompanyDirectorName">
+                Save and continue
+            </button>
+        </div>
+        <div class="nhsuk-grid-column-one-third">
+            <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit" asp-controller="@ApplicationControllerConstants.Controller_Name_Application" asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+                Exit
+            </button>
+        </div>
+    </div>
+}

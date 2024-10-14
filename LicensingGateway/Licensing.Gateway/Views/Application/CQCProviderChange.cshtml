@@ -1,0 +1,103 @@
+@using Licensing.Gateway.Models.Application
+@model CQCProviderDetailsViewModel;
+@{
+    ViewData["Title"] = "Please make any corrections to your organisation's details";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton" />
+
+@using (Html.BeginForm())
+{
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    @ViewData["Title"]
+                </h1>
+            </legend>
+
+            <dl class="nhsuk-summary-list nhsuk-summary-list">
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        CQC Provider ID
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.CQCProviderID
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Registered Provider name
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.Name
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@Domain.Models.Database.ApplicationPage.CQCProviderChangeName">
+                            Change<span class="nhsuk-u-visually-hidden"> name</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Registered address
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @Model.Address
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@Domain.Models.Database.ApplicationPage.CQCProviderChangeAddress">
+                            Change<span class="nhsuk-u-visually-hidden"> address</span>
+                        </a>
+                    </dd>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(@Model.PhoneNumber))
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Phone number
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            @Model.PhoneNumber
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@Domain.Models.Database.ApplicationPage.CQCProviderChangePhoneNumber">
+                                Change<span class="nhsuk-u-visually-hidden"> phone number</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+
+                @if (!string.IsNullOrWhiteSpace(@Model.WebsiteURL))
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                            Website address
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            @Model.WebsiteURL
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@Domain.Models.Database.ApplicationPage.CQCProviderChangeWebsite">
+                                Change<span class="nhsuk-u-visually-hidden"> website address</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+
+        </fieldset>
+
+    </div>
+
+    <partial name="_MainApplication_NextAndSave" model='new SaveAndNextViewModel { SubmitPageTo = Domain.Models.Database.ApplicationPage.CQCProviderChange }' />
+}

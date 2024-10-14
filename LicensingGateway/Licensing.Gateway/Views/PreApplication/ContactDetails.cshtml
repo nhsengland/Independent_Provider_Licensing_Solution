@@ -1,0 +1,234 @@
+@using Domain.Logic.Forms.Helpers
+@using Domain.Logic.Forms.PreApplication
+@using Licensing.Gateway.Models.PreApplication
+@model ContactDetailsViewModel;
+@{
+    ViewData["Title"] = "Please provide your contact details";
+    Layout = "~/Views/Shared/_Layout_Application_Part_1.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <partial name="_BackButton" />
+
+    @if (Model.ContactDetailsValidationFailures.Any())
+    {
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+            <div class="nhsuk-error-summary__body">
+                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                    @{
+                        foreach (var failure in Model.ContactDetailsValidationFailures)
+                        {
+                            <li>
+                                <a href="#@failure.key">@failure.value</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    Please provide your contact details
+                </h1>
+            </legend>
+
+            <details class="nhsuk-details">
+                <summary class="nhsuk-details__summary">
+                    <span class="nhsuk-details__summary-text">
+                        Whose details should I provide?
+                    </span>
+                </summary>
+                <div class="nhsuk-details__text">
+                    <p>
+                        Please provide your own details. Make sure to enter correct and current information about yourself so we can contact you if we have any questions about part one of your application form.
+                    </p>
+                </div>
+            </details>
+
+            @{
+                var validationErrors = Model.ContactDetailsValidationFailures.Where(x => x.key == nameof(Model.ContactDetails_Forename)).ToList();
+            }
+
+            @{
+                var classAttribute = "nhsuk-form-group";
+                var errorMesage = string.Empty;
+                var emailNotEqualErrorMesage = string.Empty;
+            }
+
+            @if (validationErrors.Any())
+            {
+                classAttribute = "nhsuk-form-group nhsuk-form-group--error";
+            }
+
+            <div class="@classAttribute">
+                @Html.LabelFor(m => m.ContactDetails_Forename, "First name", new { @for = $"{nameof(Model.ContactDetails_Forename)}", @class = "nhsuk-label" })
+
+                @for (int i = 0; i < validationErrors.Count; i++)
+                {
+                    var id = $"{validationErrors[i].key}-form-error-{i}";
+                    <span class="nhsuk-error-message" id="@id">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @validationErrors[i].value
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ContactDetails_Forename, HtmlHelperAttributeFactory.CreateForForename(nameof(Model.ContactDetails_Forename)))
+            </div>
+
+            @{
+                validationErrors = Model.ContactDetailsValidationFailures.Where(x => x.key == nameof(Model.ContactDetails_Surname)).ToList();
+            }
+
+            @if (validationErrors.Any())
+            {
+                classAttribute = "nhsuk-form-group nhsuk-form-group--error";
+            }
+            else
+            {
+                classAttribute = "nhsuk-form-group";
+            }
+
+            <div class="@classAttribute">
+                @Html.LabelFor(m => m.ContactDetails_Surname, "Last name", new { @for = $"{nameof(Model.ContactDetails_Surname)}", @class = "nhsuk-label" })
+
+                @for (int i = 0; i < validationErrors.Count; i++)
+                {
+                    var id = $"{validationErrors[i].key}-form-error-{i}";
+                    <span class="nhsuk-error-message" id="@id">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @validationErrors[i].value
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ContactDetails_Surname, HtmlHelperAttributeFactory.CreateForSurname(nameof(Model.ContactDetails_Surname)))
+            </div>
+
+            @{
+                validationErrors = Model.ContactDetailsValidationFailures.Where(x => x.key == nameof(Model.ContactDetails_JobTitle)).ToList();
+            }
+
+            @if (validationErrors.Any())
+            {
+                classAttribute = "nhsuk-form-group nhsuk-form-group--error";
+            }
+            else
+            {
+                classAttribute = "nhsuk-form-group";
+            }
+
+            <div class="@classAttribute">
+                @Html.LabelFor(m => m.ContactDetails_JobTitle, "Job title", new { @for = $"{nameof(Model.ContactDetails_JobTitle)}", @class = "nhsuk-label" })
+
+                @for (int i = 0; i < validationErrors.Count; i++)
+                {
+                    var id = $"{validationErrors[i].key}-form-error-{i}";
+                    <span class="nhsuk-error-message" id="@id">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @validationErrors[i].value
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ContactDetails_JobTitle, new { @id = $"{nameof(Model.ContactDetails_JobTitle)}", @class = "nhsuk-input" })
+            </div>
+
+            @{
+                validationErrors = Model.ContactDetailsValidationFailures.Where(x => x.key == nameof(Model.ContactDetails_PhoneNumber)).ToList();
+            }
+
+            @if (validationErrors.Any())
+            {
+                classAttribute = "nhsuk-form-group nhsuk-form-group--error";
+            }
+            else
+            {
+                classAttribute = "nhsuk-form-group";
+            }
+
+            <div class="@classAttribute">
+                @Html.LabelFor(m => m.ContactDetails_PhoneNumber, "Phone number", new { @for = $"{nameof(Model.ContactDetails_PhoneNumber)}", @class = "nhsuk-label" })
+
+                @for (int i = 0; i < validationErrors.Count; i++)
+                {
+                    var id = $"{validationErrors[i].key}-form-error-{i}";
+                    <span class="nhsuk-error-message" id="@id">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @validationErrors[i].value
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ContactDetails_PhoneNumber, HtmlHelperAttributeFactory.CreateForPhoneNumber(nameof(Model.ContactDetails_PhoneNumber)))
+            </div>
+
+            @{
+                validationErrors = Model.ContactDetailsValidationFailures.Where(x => x.key == nameof(Model.ContactDetails_Email)).ToList();
+            }
+
+            @if (validationErrors.Any())
+            {
+                classAttribute = "nhsuk-form-group nhsuk-form-group--error";
+            }
+            else
+            {
+                classAttribute = "nhsuk-form-group";
+            }
+
+            <div class="@classAttribute">
+                @Html.LabelFor(m => m.ContactDetails_Email, "Email address", new { @for = $"{nameof(Model.ContactDetails_Email)}", @class = "nhsuk-label" })
+
+                @for (int i = 0; i < validationErrors.Count; i++)
+                {
+                    var id = $"{validationErrors[i].key}-form-error-{i}";
+                    <span class="nhsuk-error-message" id="@id">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @validationErrors[i].value
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ContactDetails_Email, HtmlHelperAttributeFactory.CreateForEmail(nameof(Model.ContactDetails_Email)))
+            </div>
+
+            @{
+                validationErrors = Model.ContactDetailsValidationFailures.Where(x => x.key == nameof(Model.ContactDetails_EmailConfirmation)).ToList();
+            }
+
+            @if (validationErrors.Any())
+            {
+                classAttribute = "nhsuk-form-group nhsuk-form-group--error";
+            }
+            else
+            {
+                classAttribute = "nhsuk-form-group";
+            }
+
+            <div class="@classAttribute">
+                @Html.LabelFor(m => m.ContactDetails_EmailConfirmation, "Confirm email address", new { @for = $"{nameof(Model.ContactDetails_EmailConfirmation)}", @class = "nhsuk-label" })
+
+                @for (int i = 0; i < validationErrors.Count; i++)
+                {
+                    var id = $"{validationErrors[i].key}-form-error-{i}";
+                    <span class="nhsuk-error-message" id="@id">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @validationErrors[i].value
+                    </span>
+                }
+
+                @if (!string.IsNullOrEmpty(emailNotEqualErrorMesage) && emailNotEqualErrorMesage.Length > 0)
+                {
+                    <span class="nhsuk-error-message" id="example-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> @emailNotEqualErrorMesage
+                    </span>
+                }
+
+                @Html.TextBoxFor(m => m.ContactDetails_EmailConfirmation, HtmlHelperAttributeFactory.CreateForEmail(nameof(Model.ContactDetails_EmailConfirmation)))
+            </div>
+
+        </fieldset>
+
+    </div>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="ContactDetails">
+        Next
+    </button>
+}

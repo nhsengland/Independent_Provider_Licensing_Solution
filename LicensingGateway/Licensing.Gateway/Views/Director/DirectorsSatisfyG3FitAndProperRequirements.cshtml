@@ -1,0 +1,229 @@
+@using Domain.Logic.Forms.Application
+@using Domain.Logic.Forms.Helpers
+@using Domain.Models.Database
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models.Application
+@using Licensing.Gateway.Models.Directors
+@model DirectorsSatisfyG3FitAndProperRequirementsViewModel;
+@{
+    ViewData["Title"] = "Do all the individuals listed below satisfy the requirements of the NHS provider licence condition G3: fit and proper persons as Directors?";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+    var classAttribute_radio = "";
+    var classAttribute_why = "";
+}
+
+@if(Model.Directors.Count == 0)
+{
+    <div class="nhsuk-inset-text">
+        <span class="nhsuk-u-visually-hidden">Information: </span>
+        <p>
+            If applicant does not have any independent directors or equivalent, corporate directors, or parent company directors, please note that you are unable to proceed with the application.
+        </p>
+
+        <p>
+            For assistance or additional information, please contact the NHS England Independent Providers team at <a href="mailto:england.licensing@nhs.net" title="Click to email the @CommonApplicationConstants.NHS_England_Provider_Team_Name">england.licensing@nhs.net</a>.
+        </p>
+    </div>
+
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-third">
+            <p><a asp-controller="@ApplicationControllerConstants.Controller_Name_Director" asp-action="@ApplicationControllerConstants.Controller_Director_Method_DirectorCheck">Click here to review directors</a></p>
+        </div>
+        <div class="nhsuk-grid-column-one-third">
+            <p><a asp-controller="@ApplicationControllerConstants.Controller_Name_CoporateDirector" asp-action="@ApplicationControllerConstants.Controller_CoporateDirector_Method_DirectorCheck">Click here to review corporate directors</a></p>
+        </div>
+        <div class="nhsuk-grid-column-one-third">
+            <p><a asp-controller="@ApplicationControllerConstants.Controller_Name_ParentCompanyDirector" asp-action="@ApplicationControllerConstants.Controller_ParentCompanyDirector_Method_DirectorCheck">Click here to review parent company directors</a></p>
+        </div>
+    </div>
+
+    return;
+}
+
+
+<partial name="_BackButton" />
+
+@if (Model.ValidationFailure)
+{
+    if (string.IsNullOrWhiteSpace(Model.DirectorsFitAndProper))
+    {
+        classAttribute_radio = "nhsuk-form-group--error";
+    }
+
+    <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+        <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+            There is a problem
+        </h2>
+
+        <div class="nhsuk-error-summary__body">
+            <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                <li>
+                    @if (string.IsNullOrWhiteSpace(Model.DirectorsFitAndProper))
+                    {
+                        <a href="#form-error">Please select an answer</a>
+                    }
+
+                    @if (Model.DirectorsFitAndProper == ApplicationFormConstants.No && string.IsNullOrWhiteSpace(Model.IfNoWhy))
+                    {
+                        <a href="#form-error">Provide reasons/rationale for selecting No</a>
+                    }
+                </li>
+            </ul>
+        </div>
+
+    </div>
+}
+
+<legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+    <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+        @ViewData["Title"]
+    </h1>
+</legend>
+
+<p>
+    Make sure you and all Directors listed below have read and understood the <a href="https://www.england.nhs.uk/publication/nhs-provider-licence-standard-conditions/" target="_blank">G3 Fit and Proper Persons test <span class="visually-hidden"> Opens in new tab</span></a>
+</p>
+
+<details class="nhsuk-details">
+    <summary class="nhsuk-details__summary">
+        <span class="nhsuk-details__summary-text">
+            What is the G3 fit and proper persons test
+        </span>
+    </summary>
+    <div class="nhsuk-details__text">
+        <p>
+            The test aims to ensure that individuals in positions of responsibility within healthcare provider organisation are suitable and capable of carrying out their roles effectively and safely.
+        </p>
+
+    </div>
+</details>
+
+@if (Model.Directors.Any())
+{
+    <table role="table" class="nhsuk-table-responsive">
+        <caption class="nhsuk-table__caption">Directors</caption>
+        <thead role="rowgroup" class="nhsuk-table__head">
+            <tr role="row">
+                <th role="columnheader" class="" scope="col">
+                    First name
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Last name
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Date of birth
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Organisation
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Edit
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Remove
+                </th>
+            </tr>
+        </thead>
+        <tbody class="nhsuk-table__body">
+            @foreach (var director in Model.Directors)
+            {
+                <tr role="row" class="nhsuk-table__row">
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">First name </span>@director.Forename
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Last name </span>@director.Surname
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Date of birth</span>
+                        <time datetime="@director.DateOfBirth.ToString("yyyy-MM-dd")">@director.DateOfBirth.ToString("dd-MM-yyyy")</time>
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Organisation</span>@director.GroupName
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Edit</span>
+                        @using (Html.BeginForm())
+                        {
+                            <button class="nhsuk-button-not-button" type="submit" asp-action="@ApplicationControllerConstants.Controller_Director_Method_G3_Edit">
+                                Edit <span class="nhsuk-u-visually-hidden">@director.Forename @director.Surname</span>
+                            </button>
+                            @Html.Hidden("directorId", director.Id)
+                        }
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Remove</span>
+                        @using (Html.BeginForm())
+                        {
+                            <button class="nhsuk-button-not-button" type="submit" asp-action="@ApplicationControllerConstants.Controller_Director_Method_G3_Remove">
+                                Remove <span class="nhsuk-u-visually-hidden">@director.Forename @director.Surname</span>
+                            </button>
+                            @Html.Hidden("directorId", director.Id)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="nhsuk-u-padding-bottom-4"></div>
+
+    @using (Html.BeginForm())
+    {
+        <div class="nhsuk-form-group @classAttribute_radio">
+            <fieldset class="nhsuk-fieldset">
+                <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--m">
+                     Do all the individuals listed satisfy the requirements of the NHS provider licence condition G3: fit and proper persons as Directors?
+                </legend>
+
+                @if (Model.ValidationFailure && string.IsNullOrWhiteSpace(Model.DirectorsFitAndProper))
+                {
+                    <span class="nhsuk-error-message" id="form-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Select an option
+                    </span>
+                }
+
+                <div class="nhsuk-radios nhsuk-u-padding-bottom-4">
+                    @for (var i = 0; i < Model.Values.Length; i++)
+                    {
+                        var value = Model.Values[i];
+                        var id = $"{nameof(Model.DirectorsFitAndProper)}-{i}";
+                        <div class="nhsuk-radios__item">
+                            @Html.RadioButtonFor(m => m.DirectorsFitAndProper, value, new { id = id, @class = "nhsuk-radios__input" })
+                            @Html.LabelFor(m => m.DirectorsFitAndProper, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                        </div>
+                    }
+                </div>
+            </fieldset>
+
+            @if (Model.DirectorsFitAndProper == ApplicationFormConstants.No)
+            {
+                @if (Model.ValidationFailure && string.IsNullOrWhiteSpace(Model.IfNoWhy))
+                {
+                    classAttribute_why = "nhsuk-form-group--error";
+
+                    <span class="nhsuk-error-message" id="form-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Please inform us the reason why.
+                    </span>
+                }
+
+                <div class="nhsuk-form-group @classAttribute_why">
+                    <label class="nhsuk-label" for="@nameof(Model.IfNoWhy)">
+                        <span class="nhsuk-u-visually">
+                            Provide the name of the Director and the reasons/rationale for selecting No
+                        </span>
+                    </label>
+
+                    <div class="nhsuk-hint" id="example-hint">
+                        Describe the reason for selecting No, including any mitigating actions taken or planned.
+                    </div>
+
+                    @Html.TextAreaFor(m => m.IfNoWhy, HtmlHelperAttributeFactory.CreateForAddress(nameof(Model.IfNoWhy)))
+                </div>
+            }
+        </div>
+
+        <partial name="_MainApplication_NextAndSave" model='new SaveAndNextViewModel { SubmitPageTo = Domain.Models.Database.ApplicationPage.DirectorsSatisfyG3FitAndProperRequirements }' />
+    }
+}
+
+

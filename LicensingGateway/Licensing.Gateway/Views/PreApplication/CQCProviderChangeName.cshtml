@@ -1,0 +1,68 @@
+@using Licensing.Gateway.Models.PreApplication
+@model CQCProviderDetailsViewModel;
+
+    ViewData["QuestionText"] = "Enter the name of the provider";
+    ViewData["Title"] = "Enter the name of the provider";
+    Layout = "~/Views/Shared/_Layout_Application_Part_1.cshtml";
+}
+
+<partial name="_BackButton" />
+
+@using (Html.BeginForm())
+{
+    var classAttribute = "";
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute = "nhsuk-form-group--error";
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            <div class="nhsuk-error-summary__body">
+                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                    <li>
+                        <a href="#form-error">@ViewData["QuestionText"]</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class="nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    <label for="@nameof(Model.Name)">
+                        @ViewData["QuestionText"]
+                    </label>
+                </h1>
+            </legend>
+
+            <p>
+                Any changes made will not be reflected in the CQC’s database. Please visit the CQC website to ensure your provider details are accurate and up to date.
+            </p>
+
+            @if (Model.ValidationFailure)
+            {
+                <span class="nhsuk-error-message" id="form-error">
+                    <span class="nhsuk-u-visually-hidden">Error:</span> @ViewData["QuestionText"]
+                </span>
+            }
+
+            <div class="@classAttribute">
+                @Html.TextBoxFor(m => m.Name, new { @id = $"{nameof(Model.Name)}", @class = "nhsuk-input", value = Model.Name })
+            </div>
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+
+    </div>
+
+    <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="CQCProviderChangeName">
+        Next
+    </button>
+}

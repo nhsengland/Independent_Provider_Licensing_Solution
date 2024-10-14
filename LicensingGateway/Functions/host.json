@@ -1,0 +1,23 @@
+{
+    "extensions": {
+        "durableTask": {
+            "maxConcurrentActivityFunctions": 2,
+            "maxConcurrentOrchestratorFunctions": 2,
+            "hubName": "lgv2"
+        },
+        "queues": {
+            "maxDequeueCount": 10
+        }
+    },
+    "functionTimeout": "00:10:00",
+    "logging": {
+        "applicationInsights": {
+            "samplingSettings": {
+                "isEnabled": true,
+                "excludedTypes": "Request"
+            },
+            "enableLiveMetricsFilters": true
+        }
+    },
+    "version": "2.0"
+}

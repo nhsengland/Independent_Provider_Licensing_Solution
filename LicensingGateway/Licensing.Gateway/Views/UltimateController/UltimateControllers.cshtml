@@ -1,0 +1,103 @@
+@using Domain.Logic.Forms.Application
+@using Licensing.Gateway.Models.UltimateController
+@model UltimateControllersViewModel;
+@{
+    ViewData["Title"] = "Enter information about the ultimate controller(s)";
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton" />
+
+<div class="nhsuk-form-group">
+    <fieldset class="nhsuk-fieldset">
+        <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+            <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                @ViewData["Title"]
+            </h1>
+        </legend>
+        <div class="nhsuk-u-padding-bottom-4"></div>
+    </fieldset>
+
+</div>
+
+@if (Model.UltimateControllers.Any())
+{
+    <table role="table" class="nhsuk-table-responsive">
+        <caption class="nhsuk-table__caption">Ultimate controllers</caption>
+        <thead role="rowgroup" class="nhsuk-table__head">
+            <tr role="row">
+                <th role="columnheader" class="" scope="col">
+                    Name
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Edit
+                </th>
+                <th role="columnheader" class="" scope="col">
+                    Remove
+                </th>
+            </tr>
+        </thead>
+        <tbody class="nhsuk-table__body">
+            @foreach (var ultimateController in Model.UltimateControllers)
+            {
+                <tr role="row" class="nhsuk-table__row">
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Name </span>@ultimateController.Name
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Edit</span>
+                        @using (Html.BeginForm())
+                        {
+                            <button class="nhsuk-button-not-button" type="submit" asp-action="UltimateControllerEdit">
+                                Edit <span class="nhsuk-u-visually-hidden">@ultimateController.Name</span>
+                            </button>
+                            @Html.Hidden("Id", ultimateController.Id)
+                        }
+                    </td>
+                    <td role="cell" class="nhsuk-table__cell">
+                        <span class="nhsuk-table-responsive__heading">Remove</span>
+                        @using (Html.BeginForm())
+                        {
+                            <button class="nhsuk-button-not-button" type="submit" asp-action="UltimateControllerRemove">
+                                Remove <span class="nhsuk-u-visually-hidden">@ultimateController.Name</span>
+                            </button>
+                            @Html.Hidden("Id", ultimateController.Id)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="nhsuk-u-padding-bottom-4"></div>
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="@Domain.Models.Database.ApplicationPage.UltimateControllers">
+                    Save and continue
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                    <button class="nhsuk-button nhsuk-button--secondary" data-module="nhsuk-button" type="submit" asp-action="UltimateControllerAdd">
+                    Add an ultimate controller
+                </button>
+            }
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            @using (Html.BeginForm())
+            {
+                <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit" asp-controller="@ApplicationControllerConstants.Controller_Name_Application"
+                        asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+                    Exit
+                </button>
+            }
+        </div>
+    </div>
+</div>

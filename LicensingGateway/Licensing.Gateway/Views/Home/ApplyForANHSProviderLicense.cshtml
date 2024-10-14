@@ -1,0 +1,177 @@
+<meta name="robots" content="noindex">
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models
+@model HomeViewModel;
+@{
+    ViewData["Title"] = "Apply for an NHS Provider Licence";
+    Layout = "~/Views/Shared/_Layout_Sub_Page.cshtml";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+
+        <partial name="_Navigation" />
+
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            <li class="nhsuk-grid-column-one-thirds nhsuk-card-group__item">
+                <div class="nhsuk-navigation-container">
+                    <nav class="nhsuk-contents-list" role="navigation" aria-label="Left hand page navigation">
+                        <ol class="nhsuk-contents-list__list">
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#WhatYouWillNeed">What you will need</a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#BeforeApplying">Before applying</a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#HowTheApplicationWorks">How the application works</a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#WhenYoullGetAReply">When you’ll get a reply</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </li>
+
+            <li class="nhsuk-grid-column-two-thirds nhsuk-card-group__item">
+                <div class="nhsuk-card__content">
+                    <h1 class="nhsuk-heading-xl">@ViewData["Title"]</h1>
+
+                    <h2 class="nhsuk-heading-l" id="WhatYouWillNeed">
+                        What you will need
+                    </h2>
+
+                    <p>
+                        As part of this application, you will be asked for the following details:
+                    </p>
+                    <ul>
+                        <li>
+                            Your application code -  this would have been sent via email from the @CommonApplicationConstants.NHS_England_Provider_Team_Name. You will need this code each time you log in to the application form.
+                        </li>
+                        <li>
+                            The CQC provider ID.  This is also known as the CQC account number and is allocated upon registration with the Care Quality Commission.
+                        </li>
+                        <li>
+                            If applicable, the company number for the organisation you are applying for. This should agree with the information on Companies House.
+                        </li>
+                        <li>
+                            If applicable, the previous and upcoming financial year end for the organisation you are applying for.
+                        </li>
+
+                        <li>
+                            The full name and date of birth of all individuals appointed as directors or equivalents of the organisation you are applying for.
+                        </li>
+
+                        <li>
+                            We require this information to check that directors (or equivalent) of the applicant organisation comply with licence condition G3 Fit and Proper persons as Directors. Before licensing, we will check the named individuals are not listed as disqualified directors.
+                        </li>
+
+                        <li>
+                            If applicable, provide the full name and date of birth for all individuals appointed as directors or equivalents of any corporate bodies or parent companies associated with the organisation you are applying for.
+                        </li>
+
+                        <li>
+                            If applicable, the name of the Ultimate Controller associated with the organisation you are applying for.
+                        </li>
+                    </ul>
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                What is an Ultimate Controller?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <p>
+                                An Ultimate Controller is a body that can, either alone or jointly with others, instruct a licensed provider (the licensee) to act in a certain way, but cannot itself be instructed to act in a certain way. An Ultimate Controller can be an individual or a corporate body.
+                            </p>
+                        </div>
+                    </details>
+
+
+                    <h2 class="nhsuk-heading-l" id="BeforeApplying">
+                        Before applying
+                    </h2>
+
+                    <p>
+                        Make sure you and all named individual directors associated with the applicant organisation have read and understood the licence condition <a href="https://www.england.nhs.uk/publication/nhs-provider-licence-standard-conditions/" title="NHS Provider Licence: standard conditions">G3 Fit and Proper Persons test</a>.
+                    </p>
+
+                    <details class="nhsuk-details">
+                        <summary class="nhsuk-details__summary">
+                            <span class="nhsuk-details__summary-text">
+                                Why is this required?
+                            </span>
+                        </summary>
+                        <div class="nhsuk-details__text">
+                            <ul>
+                                <li>
+                                    Within the application you will be asked to declare that all directors and equivalents satisfy the requirements of licence condition G3 Fit and Proper Persons .
+                                </li>
+                                <li>
+                                    The licensee must not appoint or have in place a Director or equivalent who is not fit and proper per the licence condition.
+                                </li>
+                            </ul>
+                        </div>
+                    </details>
+
+                    <h2 class="nhsuk-heading-l" id="HowTheApplicationWorks">
+                        How the application works
+                    </h2>
+                    <ul>
+                        <li>
+                            You complete the application online.
+                        </li>
+                        <li>
+                            You will need to sign in using your Okta account and application code.
+                        </li>
+                        <li>
+                            The application is free of charge and will take approximately 20 minutes to complete if you have all the information prepared in advance.
+                        </li>
+                        <li>
+                            Once you begin the application process, you can save and resume at any time.
+                        </li>
+                    </ul>
+
+                    <h2 class="nhsuk-heading-l" id="WhenYoullGetAReply">
+                        When you’ll get a reply
+                    </h2>
+                    <p>
+                        After submitting your application, the @CommonApplicationConstants.NHS_England_Provider_Team_Name will reach out to you via email within 5 working days to discuss your application.
+                    </p>
+                    <p>
+                        Following that you will receive notification of the outcome within 2-4 weeks.
+                    </p>
+
+                    <div class="nhsuk-action-link">
+                        <a class="nhsuk-action-link__link" asp-area="" asp-controller="Application" asp-action="@Domain.Models.Database.ApplicationPage.ApplicationCode">
+                            <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="36" height="36">
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
+                            </svg>
+                            <span class="nhsuk-action-link__text">Sign in</span>
+                        </a>
+                    </div>
+
+                    <div class="nhsuk-informal-callout" id="GetSupport">
+                        <h3 class="nhsuk-informal-callout__label">
+                            <span role="text">
+                                <span class="nhsuk-u-visually-hidden">Important: </span>
+                                Get Support
+                            </span>
+                        </h3>
+                        <p>
+                            If you have any questions about the licence application process, contact the @CommonApplicationConstants.NHS_England_Provider_Team_Name at <a href="mailto:england.licensing@nhs.net" title="Click to email the @CommonApplicationConstants.NHS_England_Provider_Team_Name">england.licensing@nhs.net</a>
+                        </p>
+                        <p>
+                            A team member will normally reply within 5 working days.
+                        </p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+
+    </main>
+</div>

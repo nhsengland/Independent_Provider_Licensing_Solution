@@ -1,0 +1,21 @@
+@using Domain.Logic.Forms.Application
+@using Domain.Logic.Forms.Application.Page
+@model Licensing.Gateway.Models.Application.SaveAndNextViewModel;
+@inject IPageToControllerMapper PageToControllerMapper;
+
+<div class="nhsuk-grid-row">
+    <div class="nhsuk-grid-column-one-third">
+        <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit"
+        asp-controller="@PageToControllerMapper.Map(Model.SubmitPageTo)"
+        asp-action="@Model.SubmitPageTo">
+            @Model.SaveAndContinueButtonText
+        </button>
+    </div>
+    <div class="nhsuk-grid-column-one-third">
+        <button class="nhsuk-button nhsuk-button--reverse" data-module="nhsuk-button" type="submit"
+                asp-controller="@ApplicationControllerConstants.Controller_Name_Application"
+                asp-action="@ApplicationControllerConstants.Controller_Application_Method_SaveExit">
+            Exit
+        </button>
+    </div>
+</div>

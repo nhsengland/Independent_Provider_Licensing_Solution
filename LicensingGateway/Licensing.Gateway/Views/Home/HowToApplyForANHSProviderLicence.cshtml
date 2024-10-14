@@ -1,0 +1,160 @@
+@using Domain.Models.Forms
+@using Licensing.Gateway.Models
+@model HomeViewModel;
+@{
+    ViewData["Title"] = "How to apply for the NHS provider licence";
+    Layout = "~/Views/Shared/_Layout_Sub_Page.cshtml";
+}
+
+<div class="nhsuk-width-container app-width-container">
+    <main class="nhsuk-main-wrapper app-main-wrapper" id="maincontent" role="main">
+
+        <partial name="_Navigation" />
+
+        <ul class="nhsuk-grid-row nhsuk-card-group">
+            <li class="nhsuk-grid-column-one-thirds nhsuk-card-group__item">
+                <div class="nhsuk-navigation-container">
+                    <nav class="nhsuk-contents-list" role="navigation" aria-label="Left hand page navigation">
+                        <ol class="nhsuk-contents-list__list">
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#StepsToComplete">
+                                    Steps to complete when<br> obtaining a licence
+                                </a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#HowToApply">
+                                    How to apply
+                                </a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#WhatYouWillNeed">
+                                    What you will need
+                                </a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#WhenYouWillGetAReply">
+                                    When you will get a reply
+                                </a>
+                            </li>
+                            <li class="nhsuk-contents-list__item">
+                                <a class="nhsuk-contents-list__link" href="#GetSupport">Get support</a>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </li>
+
+            <li class="nhsuk-grid-column-two-thirds nhsuk-card-group__item">
+                <div class="nhsuk-card__content">
+                    <h1 class="nhsuk-heading-xl">@ViewData["Title"]</h1>
+
+                    <h2 class="nhsuk-heading-l" id="StepsToComplete">
+                        Steps to complete when obtaining a licence
+                    </h2>
+                    <ol class="nhsuk-list--number__list">
+                        <li class="nhsuk-list--number__item">
+                            <a href="@Url.Action("CheckIfYouNeedALicense", "Home")">
+                                Check if you need a licence
+                            </a>
+                        </li>
+                        <li class="nhsuk-list--number__item">
+                            Complete part one of the application online
+                        </li>
+                        <li class="nhsuk-list--number__item">
+                            Complete part two of the application online if required
+                        </li>
+                    </ol>
+
+                    <p>
+                        The NHS England Independent Providers team will notify you by email if you need to complete part two.
+                    </p>
+
+
+                    <h2 class="nhsuk-heading-l" id="HowToApply">
+                        How to apply
+                    </h2>
+
+                    <p>
+                        Complete part one of the application online. It’s free of charge and takes about 20 minutes if you have all the required information ready.
+                    </p>
+                    <p>
+                        Once completed, the NHS England Independent Providers team will send you an email telling you if you need to complete part two of the application.
+                    </p>
+                    <p>
+                        Part one cannot be saved once started. The application will time out after 20 minutes of inactivity, and your data will be lost.
+                    </p>
+
+                    <h2 class="nhsuk-heading-l" id="WhatYouWillNeed">
+                        What you will need
+                    </h2>
+
+                    <p>
+                        When applying, be prepared to provide the following details about your organisation:
+                    </p>
+
+                    <ul>
+                        <li>
+                            CQC Provider ID:  this is provided when you register with the Care Quality Commission. It is also called a CQC account number and can be found at the top of your registration letter.
+                        </li>
+                        <li>
+                            Expected applicable turnover: we will ask you to confirm that you have reasonable expectation of generating applicable turnover of £10 million or more over the next 12 months.
+                        </li>
+                        <li>
+                            CQC registration confirmation:
+                            <ul class="nhsuk-u-padding-top-2">
+                                <li>
+                                    We will ask you to confirm that your CQC registration includes the healthcare services your organisation provides for the NHS in England and;
+                                </li>
+                                <li>
+                                    We will ask you to confirm that your organisation still delivers regulated healthcare activities as registered with CQC.
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            Contact information: provide your name and contact details so we can reach out if we have any questions about your application.
+                        </li>
+                        <li>
+                            Please note, any authorised individual from the organisation can complete the application form on behalf of the provider organisation.
+                        </li>
+                    </ul>
+
+                    <h2 class="nhsuk-heading-l" id="WhenYouWillGetAReply">
+                        When you will get a reply
+                    </h2>
+
+                    <p>
+                        You should receive an email within 5 working days. This will tell you if you are required to complete part two of the NHS provider licence application or not.
+                    </p>
+                    <p>
+                        The email will be sent to the contact details provided at the end of the application form.
+                    </p>
+
+                    <div class="nhsuk-action-link">
+                        <a class="nhsuk-action-link__link" asp-area="" asp-controller="PreApplication" asp-action="Index">
+                            <svg class="nhsuk-icon nhsuk-icon__arrow-right-circle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true" width="36" height="36">
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                                <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a1 1 0 0 1 1.41-1.41l5.66 5.65a1 1 0 0 1 0 1.42l-5.66 5.65a1 1 0 0 1-1.41 0 1 1 0 0 1 0-1.41L13.69 13H2.05A10 10 0 1 0 12 2z"></path>
+                            </svg>
+                            <span class="nhsuk-action-link__text">
+                                Start part one of the application assessment online
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="nhsuk-informal-callout" id="GetSupport">
+                        <h3 class="nhsuk-informal-callout__label">
+                            <span role="text">
+                                <span class="nhsuk-u-visually-hidden">Important: </span>
+                                Get Support
+                            </span>
+                        </h3>
+                        <p>If you have any questions about the licence application process, contact the @CommonApplicationConstants.NHS_England_Provider_Team_Name at <a href="mailto:england.licensing@nhs.net" title="Click to email the @CommonApplicationConstants.NHS_England_Provider_Team_Name">england.licensing@nhs.net</a></p>
+                        <p>A team member will normally reply within 5 working days.</p>
+                    </div>
+
+                </div>
+            </li>
+        </ul>
+
+    </main>
+</div>

@@ -1,0 +1,53 @@
+using Database.Repository.Core.ReadWrite;
+using Domain.Models.Database;
+using Domain.Models.Database.DTO;
+
+namespace Database.Repository.Application;
+public interface IRepositoryForApplication : IReadWriteIntPkRepository<Entites.Application>
+{
+    Task<string> GetApplicationCode(int id);
+    Task<ApplicationDTO> GetApplicationDTO(int id);
+    Task<int> GetApplicationCodeId(int id);
+    Task<string> GetCompanyNumber(int id);
+    Task<bool?> GetCompanyNumberCheck(int id);
+    Task<bool?> GetDirectorsCheck(int id);
+    Task<bool?> GetCorporateDirectorsCheck(int id);
+    Task<string> GetCQCProviderAddress(int id);
+    Task<CQCProviderDetailsDTO> GetCQCProviderDetails(int id);
+    Task<string> GetCQCProviderID(int id);
+    Task<string> GetCQCProviderName(int id);
+    Task<string> GetCQCProviderPhoneNumber(int id);
+    Task<string> GetCQCProviderWebsiteURL(int id);
+    Task<ContactDetailsDTO> GetContactDetails(int id);
+    Task<ApplicationPage> GetCurrentPage(int id);
+    Task<bool?> GetDirectorsSatisfyG3FitAndProperRequirements(int id);
+    Task<string> GetDirectorsSatisfyG3FitAndProperRequirementsIfNoWhy(int id);
+    Task<DateOnly?> GetFinancialYearEndLast(int id);
+    Task<DateOnly?> GetFinancialYearEndNext(int id);
+    Task<bool?> GetNewlyIncorporatedCompany(int id);
+    Task<bool?> GetOneOrMoreParentCompanies(int id);
+    Task<string> GetReferenceId(int id);
+    Task<bool> GetSubmitApplication(int id);
+    Task<bool?> GetUltimateController(int id);
+    Task Set(int id, ContactDetailsDTO contactDetails);
+    Task SetCompanyNumber(int id, string value);
+    Task SetCompanyNumberCheck(int id, bool? value);
+    Task SetDirectorsCheck(int id, bool? value);
+    Task SetCorporateDirectorsCheck(int id, bool? value);
+    Task SetCQCProviderAddress(int id, string value);
+    Task SetCQCProviderDetails(int id, CQCProviderDetailsWithoutIdDTO details);
+    Task SetCQCProviderID(int id, string value);
+    Task SetCQCProviderName(int id, string value);
+    Task SetCQCProviderPhoneNumber(int id, string value);
+    Task SetCQCProviderWebsiteURL(int id, string value);
+    Task SetCurrentPage(int id, ApplicationPage applicationPage);
+    Task SetOneOrMoreParentCompanies(int id, bool? value);
+    Task SetDirectorsSatisfyG3FitAndProperRequirements(int id, bool? value);
+    Task SetDirectorsSatisfyG3FitAndProperRequirementsIfNoWhy(int id, string value);
+    Task SetLastFinancialYear(int id, DateOnly? value);
+    Task SetNewlyIncorporatedCompany(int id, bool? value);
+    Task SetNextFinancialYear(int id, DateOnly? value);
+    Task SetReferenceID(int id, string referenceID);
+    Task SetSubmitApplication(int id, DateTime dateTime);
+    Task SetUltimateController(int id, bool? value);
+}

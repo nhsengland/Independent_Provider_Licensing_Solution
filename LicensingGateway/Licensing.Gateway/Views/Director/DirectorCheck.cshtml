@@ -1,0 +1,99 @@
+@using Licensing.Gateway.Models.Application
+@using Licensing.Gateway.Models.Directors
+@model DirectorCheck;
+@{
+    Layout = "~/Views/Shared/_Layout_Application_Part_2.cshtml";
+}
+
+<partial name="_BackButton" />
+
+@using (Html.BeginForm())
+{
+    var classAttribute = "";
+    var showError = false;
+
+    @if (Model.ValidationFailure)
+    {
+        classAttribute = "nhsuk-form-group--error";
+        showError = true;
+
+        <div class="nhsuk-error-summary" aria-labelledby="error-summary-title" role="alert" tabindex="-1">
+            <h2 class="nhsuk-error-summary__title" id="error-summary-title">
+                There is a problem
+            </h2>
+
+            <div class="nhsuk-error-summary__body">
+                <ul class="nhsuk-list nhsuk-error-summary__list" role="list">
+                    <li>
+                        <a href="#form-error">
+                            Does @Model.ProviderName have one or more individuals appointed as Directors or equivalents?
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    }
+
+    <div class="nhsuk-form-group">
+
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+                <h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+                    Does @Model.ProviderName have one or more individuals appointed as Directors or equivalents?
+                </h1>
+            </legend>
+
+            <details class="nhsuk-details">
+                <summary class="nhsuk-details__summary">
+                    <span class="nhsuk-details__summary-text">
+                        Who is considered a director?
+                    </span>
+                </summary>
+                <div class="nhsuk-details__text">
+                    <ul>
+                        <li>
+                            Individuals who have been formally appointed as directors of registered companies under the Companies Act 2006.
+                        </li>
+                        <li>
+                            Those performing equivalent or similar functions to directors even if not formally appointed.
+                        </li>
+                    </ul>
+                </div>
+            </details>
+
+            <div class="@classAttribute">
+
+                @if (showError)
+                {
+                    @if (Model.ValidationFailure)
+                    {
+                        <span class="nhsuk-error-message" id="form-error">
+                            <span class="nhsuk-u-visually-hidden">Error:</span> Select an option
+                        </span>
+                    }
+                }
+
+                <div class="nhsuk-radios nhsuk-u-padding-bottom-4">
+
+                    @for (var i = 0; i < Model.Values.Length; i++)
+                    {
+                        var value = Model.Values[i];
+                        var id = $"{nameof(Model.DirectorsCheck)}-{i}";
+                        <div class="nhsuk-radios__item">
+                            @Html.RadioButtonFor(m => m.DirectorsCheck, value, new { id = id, @class = "nhsuk-radios__input" })
+                            @Html.LabelFor(m => m.DirectorsCheck, value, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+            <div class="nhsuk-u-padding-bottom-4"></div>
+
+        </fieldset>
+
+    </div>
+
+    <partial name="_MainApplication_NextAndSave" model='new SaveAndNextViewModel { SubmitPageTo = Domain.Models.Database.ApplicationPage.DirectorCheck }' />
+}

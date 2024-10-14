@@ -1,0 +1,519 @@
+@using Domain.Logic.Forms.Application
+@using Domain.Models.ViewModels.Application
+@model ReviewApplicationResponsesViewModel;
+
+<h3 class="nhsuk-heading-m">Company Details</h3>
+
+<dl class="nhsuk-summary-list">
+    @foreach (var response in Model.CompanyDetails)
+    {
+        <div class="nhsuk-summary-list__row">
+            <dt class="nhsuk-summary-list__key">
+                @response.Question
+            </dt>            
+            <dd class="nhsuk-summary-list__value">
+                @if(response.IsDate)
+                {
+                    <time datetime="@response.FinancialYear.ToString("yyyy-MM-dd")">@response.FinancialYear.ToString("dd-MM-yyyy")</time>
+                } else
+                {
+                    @response.Response
+                }
+                
+            </dd>
+            <dd class="nhsuk-summary-list__actions">
+                <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@response.Page" asp-controller="@response.Controller">
+                    @if (response.IsComplete)
+                    {
+                        <text>Change<span class="nhsuk-u-visually-hidden"> @response.Question</span></text>
+                    }
+                    else
+                    {
+                        <text>Complete</text>
+                    }
+                </a>
+            </dd>
+        </div>
+    }
+</dl>
+
+@if (!Model.IsReviewPage && Model.CompanyDetails.Any(cd => cd.IsComplete == false))
+{
+    return;
+}
+
+
+
+@{
+    var directorsClass = "";
+}
+@if (!Model.IsReviewPage && Model.Directors.Count == 0 && Model.DirectorCheck.Response == ApplicationFormConstants.Yes)
+{
+    directorsClass = "nhsuk-form-group--error";
+}
+
+<h3 class="nhsuk-heading-m">Directors</h3>
+<dl class="nhsuk-summary-list @directorsClass">
+    <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+            @Model.DirectorCheck.Question
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+            @Model.DirectorCheck.Response
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+            <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                asp-action="@Model.DirectorCheck.Page"
+                asp-controller="@Model.DirectorCheck.Controller">
+                @if (Model.DirectorCheck.IsComplete)
+                {
+                    <text>Change<span class="nhsuk-u-visually-hidden"> @Model.DirectorCheck.Question</span></text>
+                }
+                else
+                {
+                    <text>Complete</text>
+                }
+            </a>
+        </dd>
+    </div>
+
+    @if (Model.Directors.Count > 0)
+    {
+        <div class="nhsuk-summary-list__row">
+            <dt class="nhsuk-summary-list__key">
+            </dt>
+            <dd class="nhsuk-summary-list__value">
+                <partial name="_Directors_Table" model=Model.Directors />
+            </dd>
+            <dd class="nhsuk-summary-list__actions">
+                <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                   asp-action="@ApplicationControllerConstants.Controller_Director_Method_Directors"
+                   asp-controller="@ApplicationControllerConstants.Controller_Name_Director">
+                    Change<span class="nhsuk-u-visually-hidden"> directors</span>
+                </a>
+            </dd>
+        </div>
+    }
+    else if (@Model.DirectorCheck.Response == ApplicationFormConstants.Yes)
+    {
+        <div class="nhsuk-summary-list__row">
+            <dt class="nhsuk-summary-list__key">
+            </dt>
+            <dd class="nhsuk-summary-list__value">
+                <text>No directors have been added</text>
+            </dd>
+            <dd class="nhsuk-summary-list__actions">
+                <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                   asp-action="@ApplicationControllerConstants.Controller_Director_Method_Directors"
+                   asp-controller="@ApplicationControllerConstants.Controller_Name_Director">
+                    Add<span class="nhsuk-u-visually-hidden"> directors</span>
+                </a>
+            </dd>
+        </div>
+    }
+</dl>
+
+@if (!Model.IsReviewPage && !@Model.DirectorCheck.IsComplete)
+{
+    return;
+}
+
+<h3 class="nhsuk-heading-m">Corporate Directors</h3>
+<dl class="nhsuk-summary-list">
+    <div class="nhsuk-summary-list__row">
+        <dt class="nhsuk-summary-list__key">
+            @Model.CorporateDirectorCheck.Question
+        </dt>
+        <dd class="nhsuk-summary-list__value">
+            @Model.CorporateDirectorCheck.Response
+        </dd>
+        <dd class="nhsuk-summary-list__actions">
+            <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                asp-action="@Model.CorporateDirectorCheck.Page"
+                asp-controller="@Model.CorporateDirectorCheck.Controller">
+                @if (Model.CorporateDirectorCheck.IsComplete)
+                {
+                    <text>Change<span class="nhsuk-u-visually-hidden"> directors</span></text>
+                }
+                else
+                {
+                    <text>Complete</text>
+                }
+            </a>
+        </dd>
+    </div>
+</dl>
+    @{
+        var corporateDirectorsErrorClass = "";
+    }
+    @foreach (var group in Model.CorporateDirectorGroups)
+    {
+        corporateDirectorsErrorClass = "";
+        if (group.Directors.Count == 0 && group.OneOrMoreIndividuals == true)
+        {
+            corporateDirectorsErrorClass = "nhsuk-form-group--error";
+        }
+        <dl class="nhsuk-summary-list @corporateDirectorsErrorClass">
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    Corporate body
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @group.Name
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                       asp-action="@ApplicationControllerConstants.Controller_CoporateDirector_Method_CorporateBodyNameEdit"
+                       asp-controller="@ApplicationControllerConstants.Controller_Name_CoporateDirector"
+                       asp-route-groupId="@group.Id">
+                        Change<span class="nhsuk-u-visually-hidden"> corporate body name</span>
+                    </a>
+                </dd>
+            </div>
+
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    One or more individuals appointed as directors or equivalents
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @if (@group.OneOrMoreIndividuals != null)
+                    {
+                        if (@group.OneOrMoreIndividuals == true)
+                        {
+                            <text>Yes</text>} else {<text>No</text>
+                        }
+                    }
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                       asp-action="@ApplicationControllerConstants.Controller_CoporateDirector_Method_CorporateBodyIndividualsOrCompany_Edit"
+                       asp-controller="@ApplicationControllerConstants.Controller_Name_CoporateDirector"
+                       asp-route-groupId="@group.Id">
+                       @if (group.OneOrMoreIndividuals == null)
+                       {
+                        <text>Complete</text>
+                    }
+                    else
+                    {
+                        <text>Change<span class="nhsuk-u-visually-hidden"> directors</span></text>
+                       }
+                    </a>
+                </dd>
+            </div>
+
+            @if(group.Directors.Count > 0)
+            {
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        <partial name="_Directors_Table" model=group.Directors />
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                           asp-action="@ApplicationControllerConstants.Controller_CoporateDirector_Method_CorporateDirectorsEdit"
+                           asp-controller="@ApplicationControllerConstants.Controller_Name_CoporateDirector"
+                           asp-route-groupId="@group.Id">
+                            Change<span class="nhsuk-u-visually-hidden"> directors</span>
+                        </a>
+                    </dd>
+                </div>
+            }
+            else if (group.Directors.Count == 0 && group.OneOrMoreIndividuals == true)
+            {
+                corporateDirectorsErrorClass = "nhsuk-form-group--error";
+
+                <div class="nhsuk-summary-list__row @corporateDirectorsErrorClass">
+                    <dt class="nhsuk-summary-list__key">
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        <text>No directors have been added</text>
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                           asp-action="@ApplicationControllerConstants.Controller_CoporateDirector_Method_CorporateDirectors"
+                           asp-controller="@ApplicationControllerConstants.Controller_Name_CoporateDirector"
+                           asp-route-groupId="@group.Id">
+                            Add<span class="nhsuk-u-visually-hidden"> directors</span>
+                        </a>
+                    </dd>
+                </div>
+            }
+
+        </dl>
+    }
+
+@if (!Model.IsReviewPage && !@Model.CorporateDirectorCheck.IsComplete)
+{
+    return;
+}
+@{
+    if (Model.ShowParentCompanyDirectorSection)
+    {
+        var parentCompaniesErrorClass = "";
+
+        <h3 class="nhsuk-heading-m">Parent Companies</h3>
+        <dl class="nhsuk-summary-list">
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    @Model.ParentCompanyDirectorCheck.Question
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @Model.ParentCompanyDirectorCheck.Response
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@Model.ParentCompanyDirectorCheck.Page" asp-controller="@Model.ParentCompanyDirectorCheck.Controller">
+                        @if (Model.ParentCompanyDirectorCheck.IsComplete)
+                        {
+                            <text>Change<span class="nhsuk-u-visually-hidden"> @Model.ParentCompanyDirectorCheck.Question</span></text>
+                        }
+                        else
+                        {
+                            <text>Complete</text>
+                        }
+                    </a>
+                </dd>
+            </div>
+        </dl>
+
+        @foreach (var group in Model.ParentCompanyGroups)
+        {
+            parentCompaniesErrorClass = "";
+
+            if (group.OneOrMoreIndividuals != null && group.OneOrMoreIndividuals == true && group.Directors.Count == 0)
+            {
+                parentCompaniesErrorClass = "nhsuk-form-group--error";
+            }
+            <dl class="nhsuk-summary-list @parentCompaniesErrorClass">
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        Parent company
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @group.Name
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                           asp-action="@ApplicationControllerConstants.Controller_ParentCompanyDirector_Method_ParentCompanyNameEdit"
+                           asp-controller="@ApplicationControllerConstants.Controller_Name_ParentCompanyDirector"
+                           asp-route-groupId="@group.Id">
+                            Change<span class="nhsuk-u-visually-hidden"> parent company name</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="nhsuk-summary-list__row">
+                    <dt class="nhsuk-summary-list__key">
+                        One or more individuals appointed as directors or equivalents
+                    </dt>
+                    <dd class="nhsuk-summary-list__value">
+                        @if (@group.OneOrMoreIndividuals != null)
+                        {
+                            if (@group.OneOrMoreIndividuals == true)
+                            {
+                                <text>Yes</text>
+                            }
+                            else
+                            {
+                                <text>No</text>
+                            }
+                        }
+                    </dd>
+                    <dd class="nhsuk-summary-list__actions">
+                        <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                           asp-action="@ApplicationControllerConstants.Controller_CoporateDirector_Method_ParentCompanyDirectorsOrEquivalents_Edit"
+                           asp-controller="@ApplicationControllerConstants.Controller_Name_ParentCompanyDirector"
+                           asp-route-groupId="@group.Id">
+                            @if (group.OneOrMoreIndividuals == null)
+                            {
+                                <text>Complete</text>
+                            }
+                            else
+                            {
+                                <text>Change</text>
+                            }
+                        </a>
+                    </dd>
+                </div>
+
+                @if (group.Directors.Count > 0)
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            <partial name="_Directors_Table" model=group.Directors />
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                               asp-action="@ApplicationControllerConstants.Controller_ParentCompanyDirector_Method_ParentCompanyDirectorsEdit"
+                               asp-controller="@ApplicationControllerConstants.Controller_Name_ParentCompanyDirector"
+                               asp-route-groupId="@group.Id">
+                                Change
+                                <span class="nhsuk-u-visually-hidden"> directors</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+                else if (group.OneOrMoreIndividuals != null && group.OneOrMoreIndividuals == true && group.Directors.Count == 0)
+                {
+                    <div class="nhsuk-summary-list__row">
+                        <dt class="nhsuk-summary-list__key">
+                        </dt>
+                        <dd class="nhsuk-summary-list__value">
+                            <text>No directors have been added</text>
+                        </dd>
+                        <dd class="nhsuk-summary-list__actions">
+                            <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                               asp-action="@ApplicationControllerConstants.Controller_ParentCompanyDirector_Method_ParentCompanyDirectorsEdit"
+                               asp-controller="@ApplicationControllerConstants.Controller_Name_ParentCompanyDirector"
+                               asp-route-groupId="@group.Id">
+                                Add
+                                <span class="nhsuk-u-visually-hidden"> directors</span>
+                            </a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+        }
+
+
+        @if (!Model.IsReviewPage && !@Model.ParentCompanyDirectorCheck.IsComplete)
+        {
+            return;
+        }
+    }
+}
+
+<h3 class="nhsuk-heading-m">Final Checks</h3>
+
+<dl class="nhsuk-summary-list">
+    @foreach (var response in Model.FinalChecks)
+    {
+        <div class="nhsuk-summary-list__row">
+            <dt class="nhsuk-summary-list__key">
+                @response.Question
+            </dt>
+            <dd class="nhsuk-summary-list__value">
+                @response.Response
+            </dd>
+            <dd class="nhsuk-summary-list__actions">
+                <a class="nhsuk-change-link__link" data-module="nhsuk-button" asp-action="@response.Page" asp-controller="@response.Controller">
+                    @if (response.IsComplete)
+                    {
+                        <text>
+                            Change
+                            <span class="nhsuk-u-visually-hidden"> @response.Question</span>
+                        </text>
+                    }
+                    else
+                    {
+                        <text>Complete</text>
+                    }
+                </a>
+            </dd>
+        </div>
+    }
+</dl>
+
+@if (!Model.IsReviewPage && Model.FinalChecks.Any(cd => cd.IsComplete == false))
+{
+    return;
+}
+
+@{
+    var ultimateControllerErrorClass = "";
+
+    if (Model.UltimateControllerCheck!= null && Model.UltimateControllerCheck.Response == ApplicationFormConstants.Yes && Model.UltimateControllers.Count == 0)
+    {
+        ultimateControllerErrorClass = "nhsuk-form-group--error";
+    }
+}
+
+
+@if (Model.IsCrsOrHardToReplace && Model.UltimateControllerCheck != null)
+{
+    <dl class="nhsuk-summary-list @ultimateControllerErrorClass">
+        <div class="nhsuk-summary-list__row">
+            <dt class="nhsuk-summary-list__key">
+                @Model.UltimateControllerCheck.Question
+            </dt>
+            <dd class="nhsuk-summary-list__value">
+                @Model.UltimateControllerCheck.Response
+            </dd>
+            <dd class="nhsuk-summary-list__actions">
+                <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                   asp-action="@Model.UltimateControllerCheck.Page"
+                   asp-controller="@Model.UltimateControllerCheck.Controller">
+                    @if (Model.UltimateControllerCheck.IsComplete)
+                    {
+                        <text>Change<span class="nhsuk-u-visually-hidden"> @Model.UltimateControllerCheck.Question</span></text>
+                    }
+                    else
+                    {
+                        <text>Complete</text>
+                    }
+                </a>
+            </dd>
+        </div>
+
+        @if (@Model.UltimateControllerCheck.Response == ApplicationFormConstants.Yes)
+        {
+            <div class="nhsuk-summary-list__row">
+                <dt class="nhsuk-summary-list__key">
+                    Ultimate controllers
+                </dt>
+                <dd class="nhsuk-summary-list__value">
+                    @{
+                        if(Model.UltimateControllers.Count > 0)
+                        {
+                            <table class="nhsuk-table">
+                                <caption class="nhsuk-table__caption"></caption>
+                                <thead role="rowgroup" class="nhsuk-table__head">
+                                    <tr role="row">
+                                        <th role="columnheader" class="" scope="col">
+                                            Name
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="nhsuk-table__body">
+                                    @{
+                                        foreach (var uc in Model.UltimateControllers)
+                                        {
+                                            <tr role="row" class="nhsuk-table__row">
+                                                <td class="nhsuk-table__cell">@uc.Name</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <text>
+                                No ultimate controllers have been added
+                            </text>
+                        }
+
+                    }
+                </dd>
+                <dd class="nhsuk-summary-list__actions">
+                    <a class="nhsuk-change-link__link" data-module="nhsuk-button"
+                       asp-action="@ApplicationControllerConstants.Controller_UC_Method_UltimateControllers"
+                       asp-controller="@ApplicationControllerConstants.Controller_Name_UC">
+                        @if (Model.UltimateControllers.Count == 0)
+                        {
+                            <text>Add</text>
+                        }
+                        else
+                        {
+                            <text>Change</text>
+                        }
+                        <span class="nhsuk-u-visually-hidden"> ultimate controllers</span>
+                    </a>
+                </dd>
+            </div>
+        }
+        
+    </dl>
+}

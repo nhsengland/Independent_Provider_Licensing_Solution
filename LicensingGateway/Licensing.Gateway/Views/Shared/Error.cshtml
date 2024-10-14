@@ -1,0 +1,16 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Oops! Something went wrong on our end";
+}
+
+<h1 class=" nhsuk-fieldset__heading nhsuk-u-padding-bottom-4">
+    @ViewData["Title"]
+</h1>
+
+<p><strong>We apologize for the inconvenience</strong>. It seems that something didn’t quite go as planned. But don’t worry, we’re here to help! Below are some options to get you back on track:</p>
+
+<ul>
+    <li>Return to the Homepage: <a asp-controller="Home" asp-action="Index">Click here</a> to go back to our homepage. You might find what you were looking for there.</li>
+</ul>
+
+<p>Thanks for your patience!</p>

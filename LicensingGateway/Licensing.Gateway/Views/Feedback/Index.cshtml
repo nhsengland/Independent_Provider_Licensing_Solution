@@ -1,0 +1,91 @@
+@using Licensing.Gateway.Models.Feedback
+@model FeedbackViewModel;
+
+@using (Html.BeginForm())
+{
+    var classAttribute_satisfied = "";
+    var classAttribute_howToImprove = "";
+
+    @if (Model.ValidationFailure && Model.Satisfaction == 0)
+    {
+        classAttribute_satisfied = "nhsuk-form-group--error";
+    }
+
+    @if (Model.ValidationFailure && string.IsNullOrWhiteSpace(Model.HowToImprove))
+    {
+        classAttribute_howToImprove = "nhsuk-form-group--error";
+    }
+
+    <h1 class="nhsuk-heading-l">
+        Give us feedback on this service
+    </h1>
+
+    <h2 class="nhsuk-heading-m">
+        Satisfaction survey
+    </h2>
+
+    <div class="nhsuk-form-group @classAttribute_satisfied">
+        <fieldset class="nhsuk-fieldset">
+            <legend class="nhsuk-fieldset__legend nhsuk-fieldset__legend--s">
+                <p class="nhsuk-label">
+                    Overall, how did you feel about the service you received today?
+                </p>
+            </legend>
+            <div class="nhsuk-radios nhsuk-u-padding-bottom-4">
+
+                @if (Model.ValidationFailure && Model.Satisfaction == 0)
+                {
+                    <span class="nhsuk-error-message" id="form-error">
+                        <span class="nhsuk-u-visually-hidden">Error:</span> Select an option
+                    </span>
+                }
+
+                <div class="nhsuk-radios__item">
+                    @{
+                        foreach (Domain.Models.Database.FeedbackSatisfaction item in Enum.GetValues(typeof(Domain.Models.Database.FeedbackSatisfaction)))
+                        {
+                            var id = $"{nameof(Model.Satisfaction)}-{(int)item}";
+
+                            var label = item.ToString().Replace("Very", "Very ");
+
+                            <div class="nhsuk-radios__item">
+                                @Html.RadioButtonFor(model => model.Satisfaction, item, new { id = id, @class = "nhsuk-radios__input" })
+                                @Html.LabelFor(m => m.Satisfaction, label, new { @for = id, @class = "nhsuk-label nhsuk-radios__label" })
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="nhsuk-form-group nhsuk-character-count @classAttribute_howToImprove" data-module="nhsuk-character-count" data-maxlength="1200">
+        <fieldset class="nhsuk-fieldset">
+            <label class="nhsuk-label" for="@nameof(Model.HowToImprove)">
+                How could we improve this service?
+            </label>
+            <div class="nhsuk-hint" id="example-hint">
+                Do not include personal or financial information, for example, your National Insurance number or credit card details.
+            </div>
+            @Html.TextAreaFor(m => m.HowToImprove, new { @id = $"{nameof(Model.HowToImprove)}", @class = "nhsuk-textarea nhsuk-js-character-count", aria_describedby = "Body-hint", rows = 5 })
+            <div id="HowToImprove-info" class="nhsuk-hint nhsuk-character-count__message">
+                You can enter up to 1200 characters
+            </div>
+        </fieldset>
+    </div>
+
+    <div class="nhsuk-grid-row">
+        <div class="nhsuk-grid-column-one-quarter">
+            <button class="nhsuk-button" data-module="nhsuk-button" data-prevent-double-click="true" type="submit" asp-action="Index">
+                Next
+            </button>
+        </div>
+        <div class="nhsuk-grid-column-one-quarter">
+            <a asp-action="Cancel">
+                Cancel
+            </a>
+        </div>
+    </div>
+
+}
+
